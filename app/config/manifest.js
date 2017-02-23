@@ -56,6 +56,12 @@ internals.manifest = {
                 }
             }
         },
+        {
+            plugin: {
+                register: './lib/sequelize.js',
+                options: Config.get('/sequelize')
+            }
+        },
 
         //  Core routes
         {

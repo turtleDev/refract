@@ -23,6 +23,8 @@
     "inert": "^4.0.2",
     "joi": "^9.0.4",
     "require-dir": "^0.3.1",
+    "sequelize": "^3.30.2",
+    "sqlite3": "^3.1.8",
     "vision": "^4.0.1",
     "visionary": "^6.0.2"
   },

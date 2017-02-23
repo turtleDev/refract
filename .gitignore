@@ -3,3 +3,6 @@
 
 # python junk
 __pycache__
+
+# local database
+source.db
