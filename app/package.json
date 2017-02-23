@@ -1,0 +1,39 @@
+{
+  "name": "refract",
+  "version": "0.0.0",
+  "description": "slack jukebox",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development gulp dev",
+    "start": "node server.js",
+    "test": "node node_modules/lab/bin/lab --verbose --colors"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "^6.23.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "confidence": "^3.0.1",
+    "glob": "^7.0.6",
+    "glue": "^4.0.0",
+    "gulp": "^3.9.1",
+    "handlebars": "^4.0.5",
+    "hapi": "^15.0.3",
+    "hoek": "^4.0.2",
+    "inert": "^4.0.2",
+    "joi": "^9.0.4",
+    "require-dir": "^0.3.1",
+    "vision": "^4.0.1",
+    "visionary": "^6.0.2"
+  },
+  "devDependencies": {
+    "babel-loader": "^6",
+    "del": "^2.2.2",
+    "eslint-plugin-react": "^6.10.0",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-sass": "^3.1.0",
+    "webpack": "^1.12.14"
+  }
+}
