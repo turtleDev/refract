@@ -14,6 +14,10 @@ def encode_query(url, query):
     parse_result = urllib.parse.urlparse(url)._asdict()
     base_query = urllib.parse.parse_qs(parse_result['query'])
 
+    channel = base_query.get('channel')
+    if channel and isinstance(channel, list):
+        base_query['channel'] = channel[0]
+
     # merge the two query maps
     query = {**base_query, **query}
     

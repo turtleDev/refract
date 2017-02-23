@@ -17,11 +17,12 @@ class ArchiveSpider(scrapy.Spider):
 
     def _get_link(self, source):
 
-        pattern = "<(https?:\/\/(www\.)?youtube\.com\/watch.+)>"
+        # So a quick google search reveals that youtube ids are 11 characters long
+        pattern = "<(https?:\/\/(www\.)?youtube\.com\/watch\?v=...........)>"
         match = re.search(pattern, source)
 
         if match is not None:
-            return match[0]
+            return match.groups()[0]
         else:
             return None
         
@@ -45,11 +46,15 @@ class ArchiveSpider(scrapy.Spider):
 
             item = UrlItem()
             item['url'] = url
+            item['timestamp'] = message['ts']
 
             yield item
 
-        tail = payload['messages'][-1]['ts']
+        try:
+            tail = payload['messages'][-1]['ts']
+        except IndexError:
+            return None
 
         url = encode_query(response.url, {'to': tail});
 
-        return scrapy.Request(url)
+        yield scrapy.Request(url)

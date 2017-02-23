@@ -18,8 +18,13 @@ NEWSPIDER_MODULE = 'slackarchive.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'refract scraper'
 
-# Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+# Item pipeline
+ITEM_PIPELINES = {
+    'slackarchive.pipelines.DatabasePipeline': 100
+}
 
 # channels to scrape
 CHANNELS = ['C0DT79Y86']
+
+DB_PATH = 'source.db'
+
