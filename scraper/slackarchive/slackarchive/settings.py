@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 # Scrapy settings for slackarchive project
 #
 # For simplicity, this file contains only settings considered important or
@@ -9,11 +11,13 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
+class DatabaseNotSpecified(Exception):
+    pass
+
 BOT_NAME = 'slackarchive'
 
 SPIDER_MODULES = ['slackarchive.spiders']
 NEWSPIDER_MODULE = 'slackarchive.spiders'
-
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'refract scraper'
@@ -33,5 +37,9 @@ ITEM_PIPELINES = {
 CHANNELS = ['C0DT79Y86']
 
 # where to save the files
-DB_PATH = 'source.db'
+DB_PATH = os.getenv('REFRACT_DB_PATH')
+
+if DB_PATH is None:
+    raise DatabaseNotSpecified(
+        'please set REFRACT_DB_PATH environment variable to the path to the database')
 
