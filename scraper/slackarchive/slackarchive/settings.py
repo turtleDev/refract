@@ -18,6 +18,12 @@ NEWSPIDER_MODULE = 'slackarchive.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'refract scraper'
 
+# delay to make sure we don't go over api limits
+DOWNLOAD_DELAY = 1
+
+# keep retrying, never give up
+RETRY_ENABLE = True
+RETRY_HTTP_CODES = [429]
 # Item pipeline
 ITEM_PIPELINES = {
     'slackarchive.pipelines.DatabasePipeline': 100
@@ -26,5 +32,6 @@ ITEM_PIPELINES = {
 # channels to scrape
 CHANNELS = ['C0DT79Y86']
 
+# where to save the files
 DB_PATH = 'source.db'
 

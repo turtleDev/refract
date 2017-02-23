@@ -12,7 +12,7 @@ class DatabasePipeline(object):
     def __init__(self):
 
         self.collisions = 0
-        self.collision_threshold = 50
+        self.collision_threshold = -1
         self.active = True
     
     def open_spider(self, spider):
