@@ -11,6 +11,6 @@ module.exports = function(sequelize, DataTypes) {
         timestamps: false,
     };
 
-    return sequelize.define('urls', schema, options);
+    return sequelize.define('Url', schema, options);
 };
 

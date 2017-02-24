@@ -72,6 +72,10 @@ internals.manifest = {
         {
             plugin: './app/routes/pages.js'
         },
+
+        {
+            plugin: './app/routes/ajax.js'
+        }
     ]
 };
 
