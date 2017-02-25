@@ -9,7 +9,7 @@ var webpackConfig = {
     },
     output: {
         path: '.build/js/',
-        filename: '[name].bundle.js'
+        filename: '[name].js'
     },
     cache: true,
     debug: false,
@@ -27,12 +27,6 @@ var webpackConfig = {
             name: 'vendor',
             filename: 'vendor.js',
             minChunks: 2
-        }),
-        new Webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery',
-            'root.jQuery': 'jquery'
         })
     ]
 };

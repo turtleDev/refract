@@ -1,5 +1,5 @@
 # editor junk
-.swp
+*.swp
 
 # python junk
 __pycache__

@@ -7,7 +7,7 @@ Composer(function(err, server) {
 
     Hoek.assert(!err, err);
     server.start(function() {
-        console.log('Server started @ ' + server.info.uri);
+        console.log('[server] Server started @ ' + server.info.uri);
     });
     
 });

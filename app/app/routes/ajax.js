@@ -12,7 +12,7 @@ exports.register = function(server, options, next) {
     
     {
         method: 'GET',
-        path: '/list',
+        path: '/v1/list',
         config: Controllers.ajax.url.index
     }
 

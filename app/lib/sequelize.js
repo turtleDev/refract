@@ -31,7 +31,7 @@ exports.register = function(server, options, next) {
     });
 
     sequelize.sync().then(() => {
-        console.log('database connected');
+        console.log('[sequelize] Database Connected');
     });
 
     db._sequelize = sequelize;
