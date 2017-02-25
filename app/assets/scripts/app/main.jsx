@@ -1,8 +1,26 @@
 'use strict';
 
 import React from 'react';
+import List from './list.jsx';
+
+import Request from './request.js';
 
 class App extends React.Component {
+
+    constructor() {
+        super();
+        this.state = { items: [] };
+        this.refreshList();
+    }
+
+    refreshList() {
+        Request('GET', '/v1/list').then((res) => {
+            res = JSON.parse(res);
+            this.setState({
+                items: res.videos
+            });
+        });
+    }
 
     render() {
 
@@ -19,6 +37,7 @@ class App extends React.Component {
                     The Slack Jukebox
                     </code>
                 </pre>
+                <List values={this.state.items} />
             </div>
         );
     }
