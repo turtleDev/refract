@@ -8,6 +8,7 @@
 import scrapy
 
 
-class UrlItem(scrapy.Item):
+class VideoItem(scrapy.Item):
+    title = scrapy.Field()
     url = scrapy.Field()
-    timestamp = scrapy.Field()
+    duration = scrapy.Field()

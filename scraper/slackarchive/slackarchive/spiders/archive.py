@@ -6,12 +6,13 @@ import re
 import scrapy
 
 from slackarchive.utils import encode_query
-from slackarchive.items import UrlItem
+from slackarchive.items import VideoItem
+from slackarchive.loaders import VideoItemLoader
 
 class ArchiveSpider(scrapy.Spider):
 
     name = "archive"
-    allowed_domains = ["slackarchive.io"]
+    allowed_domains = ["slackarchive.io", "youtube.com"]
 
     _api_url = 'http://api.slackarchive.io/v1/messages'
 
@@ -44,11 +45,7 @@ class ArchiveSpider(scrapy.Spider):
             if url is None:
                 continue
 
-            item = UrlItem()
-            item['url'] = url
-            item['timestamp'] = message['ts']
-
-            yield item
+            yield scrapy.Request(url, callback=self.parse_metadata)
 
         try:
             tail = payload['messages'][-1]['ts']
@@ -57,4 +54,14 @@ class ArchiveSpider(scrapy.Spider):
 
         url = encode_query(response.url, {'to': tail});
 
-        yield scrapy.Request(url)
+        # yield scrapy.Request(url)
+
+    def parse_metadata(self, response):
+
+        l = VideoItemLoader(VideoItem(), response.xpath('/html/head')) 
+
+        l.add_xpath('title', '//meta[@itemprop="name"]/@content')
+        l.add_xpath('duration', '//meta[@itemprop="duration"]/@content')
+        l.add_value('url', response.url)
+
+        yield l.load_item()

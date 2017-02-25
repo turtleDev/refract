@@ -20,7 +20,7 @@ SPIDER_MODULES = ['slackarchive.spiders']
 NEWSPIDER_MODULE = 'slackarchive.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'refract scraper'
+USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'
 
 # delay to make sure we don't go over api limits
 DOWNLOAD_DELAY = 1

@@ -20,35 +20,32 @@ def cleanup():
 
 class Url:
 
-    name = 'urls'
+    name = 'videos'
 
     url = None
-
-    # timestamp is pretty much ignored
-    timestamp = None
-
 
     def _check_connection(self):
 
         if connection is None:
             raise ConnectionNotOpenError()
 
-    def __init__(self, url, timestamp):
+    def __init__(self, item):
 
-        self.url = url
-        self.timestamp = timestamp
+        self.url = item['url']
+        self.title = item['title']
+        self.duration = item['duration']
 
         self._check_connection()
 
-        q = 'create table if not exists {}(id integer primary key, url varchar);'.format(self.name)
+        q = 'create table if not exists {}(id integer primary key, url varchar, title varchar, duration varchar);'.format(self.name)
         cursor.execute(q)
 
     def save(self):
 
         self._check_connection()
 
-        q = 'insert into {}(url) values(?)'.format(self.name)
-        result = cursor.execute(q, (self.url,))
+        q = 'insert into {}(url, title, duration) values(?, ?, ?)'.format(self.name)
+        result = cursor.execute(q, (self.url, self.title, self.duration))
         connection.commit()
 
     def exists(self):

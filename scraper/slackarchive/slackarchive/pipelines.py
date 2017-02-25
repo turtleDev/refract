@@ -23,7 +23,7 @@ class DatabasePipeline(object):
         if self.active is False:
             return
 
-        u = models.Url(item['url'], item['timestamp'])
+        u = models.Url(item)
 
         if u.exists() is True:
             self.collisions += 1
