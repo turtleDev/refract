@@ -4,10 +4,18 @@ import React from 'react';
 
 class List extends React.Component {
     renderNodes() {
-        const nodes = this.props.values.map((value, index) => {
+        const infoStyle = {
+            float: 'right'
+        };
+        const listStyle = {
+            listStyle: 'none'
+        };
+        const nodes = this.props.items.map((item, index) => {
             return (
-                <li key={index}>
-                    <a href="#">{value}</a>
+                <li style={listStyle} key={index}>
+                    <a href="javascript: void(0)" onClick={() => this.props.onClick(item)}>{item.title}
+                        <span style={infoStyle}>({item.duration})</span>
+                    </a>
                 </li>
             );
         });

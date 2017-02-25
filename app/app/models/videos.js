@@ -3,7 +3,7 @@
 module.exports = function(sequelize, DataTypes) {
 
     const schema = {
-        url: DataTypes.STRING,
+        video_id: DataTypes.STRING,
         title: DataTypes.STRING,
         duration: DataTypes.STRING
     };

@@ -31,26 +31,26 @@ class Url:
 
     def __init__(self, item):
 
-        self.url = item['url']
         self.title = item['title']
         self.duration = item['duration']
+        self.video_id = item['video_id']
 
         self._check_connection()
 
-        q = 'create table if not exists {}(id integer primary key, url varchar, title varchar, duration varchar);'.format(self.name)
+        q = 'create table if not exists {}(id integer primary key, video_id varchar, title varchar, duration varchar);'.format(self.name)
         cursor.execute(q)
 
     def save(self):
 
         self._check_connection()
 
-        q = 'insert into {}(url, title, duration) values(?, ?, ?)'.format(self.name)
-        result = cursor.execute(q, (self.url, self.title, self.duration))
+        q = 'insert into {}(video_id, title, duration) values(?, ?, ?)'.format(self.name)
+        result = cursor.execute(q, (self.video_id, self.title, self.duration))
         connection.commit()
 
     def exists(self):
-        q = 'select * from {} where url=?'.format(self.name)
-        result = cursor.execute(q, (self.url,)).fetchone()
+        q = 'select * from {} where video_id=?'.format(self.name)
+        result = cursor.execute(q, (self.video_id,)).fetchone()
         if result:
             return True
         else:

@@ -62,6 +62,6 @@ class ArchiveSpider(scrapy.Spider):
 
         l.add_xpath('title', '//meta[@itemprop="name"]/@content')
         l.add_xpath('duration', '//meta[@itemprop="duration"]/@content')
-        l.add_value('url', response.url)
+        l.add_value('video_id', response.url)
 
         yield l.load_item()

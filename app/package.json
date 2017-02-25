@@ -28,7 +28,8 @@
     "sequelize": "^3.30.2",
     "sqlite3": "^3.1.8",
     "vision": "^4.0.1",
-    "visionary": "^6.0.2"
+    "visionary": "^6.0.2",
+    "youtube-player": "^4.2.2"
   },
   "devDependencies": {
     "babel-loader": "^6",

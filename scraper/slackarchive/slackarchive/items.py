@@ -9,6 +9,6 @@ import scrapy
 
 
 class VideoItem(scrapy.Item):
+    video_id = scrapy.Field()
     title = scrapy.Field()
-    url = scrapy.Field()
     duration = scrapy.Field()
