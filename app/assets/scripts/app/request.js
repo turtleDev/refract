@@ -10,7 +10,7 @@ const Request = function(method, uri,  payload = null) {
             if ( xhr.status >= 200 && xhr.status < 300 ) {
                 return resolve(xhr.responseText);
             } else {
-                return reject(xhr)
+                return reject(xhr);
             }
         };
 

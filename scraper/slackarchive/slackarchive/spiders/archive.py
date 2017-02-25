@@ -54,7 +54,7 @@ class ArchiveSpider(scrapy.Spider):
 
         url = encode_query(response.url, {'to': tail});
 
-        # yield scrapy.Request(url)
+        yield scrapy.Request(url)
 
     def parse_metadata(self, response):
 
