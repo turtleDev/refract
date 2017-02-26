@@ -1,43 +1,84 @@
 'use strict';
 
 import React from 'react';
+
 import List from './list.jsx';
+import { Player, PlayerState } from './player.jsx';
 
 import Request from './request.js';
-import YoutubePlayer from 'youtube-player';
+import Utils from './utils.js';
 
 class App extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = { 
-            items: [],
-            player: null
+            videos: [],
+            random: false,
+            repeat: false,
+            idx: null
         };
-        Request('GET', '/v1/list').then((res) => {
-            res = JSON.parse(res);
-            this.setState({
-                items: res.videos,
+    }
+
+    componentWillMount() {
+        this.loadData();
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        const video_id = nextState.videos[nextState.idx].video_id;
+        this.player.play(video_id);
+    }
+
+    loadData() {
+        Request('GET', '/v0/videos').then((response) => {
+            const videos = JSON.parse(response).videos;
+            this.setState({ 
+                videos,
+                idx: 0
             });
-            this.loadPlayer();
         });
     }
 
-    handleClick(item) {
-        if ( this.state.player ) {
-            this.state.player.loadVideoById(item.video_id);
-            this.state.player.playVideo();
-        }
+    handleNext() {
+        this.setState((prevState) => {
+            let { idx, videos } = prevState;
+            if ( this.state.random ) {
+                let old_idx = idx;
+                while ( idx === old_idx ) {
+                    idx = Math.floor(Math.random() * videos.length);
+                }
+            } else if ( !this.state.repeat ) {
+                idx = (idx < videos.length-1)?idx+1:0;
+            }
+            return { idx };
+        });
+
     }
 
-    loadPlayer() {
-        const playerOpts = {
-            width: '100%'
-        };
-        const player = YoutubePlayer('yt-player', playerOpts);
-        player.loadVideoById(this.state.items[0].video_id);
-        player.playVideo();
-        this.setState({ player });
+    handlePrev() {
+        this.setState((prevState) => {
+            let { idx, videos } = prevState;
+            idx = (idx > 0)?idx-1:videos.length -1;
+            return { idx };
+        });
+    }
+
+    toggleRandom() { 
+        this.setState((prevState, props) => {
+            return { random: !prevState.random }
+        });
+    }
+
+    toggleRepeat() {
+        this.setState((prevState, props) => {
+            return { repeat: !prevState.repeat }
+        });
+    }
+
+    handleStateChange(event) {
+        if ( event.data == PlayerState.ENDED ) {
+            this.handleNext();
+        }
     }
 
     render() {
@@ -48,10 +89,6 @@ class App extends React.Component {
             padding: '2em 0'
         };
 
-        const ytStub = {
-            height: 360
-        };
-
         return (
             <div style={baseStyles}>
                 <h1>Refract</h1>
@@ -60,10 +97,16 @@ class App extends React.Component {
                     The Slack Jukebox
                     </code>
                 </pre>
-                <div>
-                    <div style={ytStub} id="yt-player"></div>
-                </div>
-                <List onClick={(item) => this.handleClick(item)} items={this.state.items.slice(0, 10)} />
+                <p>Random: {this.state.random?'ON':'OFF'}, Repeat: {this.state.repeat?'ON':'OFF'}</p>
+                <Player 
+                    ref={(player) => this.player = player}
+                    onNext={() => this.handleNext()} 
+                    onPrev={() => this.handlePrev()} 
+                    onRandom={() => this.toggleRandom()}
+                    onRepeat={() => this.toggleRepeat()}
+                    onStateChange={(e) => this.handleStateChange(e)}/>
+
+                <List items={this.state.videos} />
             </div>
         );
     }
