@@ -5,6 +5,14 @@ import YoutubePlayer from 'youtube-player';
 
 import Controls from './controls.jsx';
 
+export let PlayerState = {
+    ENDED: 0,
+    PLAYING: 1,
+    PAUSED: 2,
+    BUFFERING: 3,
+    CUED: 5
+}
+    
 export class Player extends React.Component {
 
     constructor(props) {
@@ -29,7 +37,12 @@ export class Player extends React.Component {
 
     loadPlayer() {
         const playerOpts = {
-            width: '100%'
+            width: '100%',
+            playerVars: {
+                disablekb: 1,
+                modestbranding: 1,
+                fs: 0
+            }
         };
         this.player = YoutubePlayer('yt-player', playerOpts);
         this.player.addEventListener('onStateChange', (data) => {
@@ -69,11 +82,3 @@ export class Player extends React.Component {
     }
 }
 
-export let PlayerState = {
-    ENDED: 0,
-    PLAYING: 1,
-    PAUSED: 2,
-    BUFFERING: 3,
-    CUED: 5
-}
-    

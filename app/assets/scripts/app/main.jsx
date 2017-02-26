@@ -89,6 +89,23 @@ class App extends React.Component {
             padding: '2em 0'
         };
 
+        /* Stateless functional component */
+        const renderItem = function(props) {
+
+            const infoStyle = {
+                float: 'right'
+            };
+
+            return (
+                <span>
+                    {props.title}
+                    <span style={infoStyle}>
+                        ({props.duration})
+                    </span>
+                </span>
+            );
+        }
+
         return (
             <div style={baseStyles}>
                 <h1>Refract</h1>
@@ -106,7 +123,10 @@ class App extends React.Component {
                     onRepeat={() => this.toggleRepeat()}
                     onStateChange={(e) => this.handleStateChange(e)}/>
 
-                <List items={this.state.videos} />
+                <List 
+                    items={this.state.videos} 
+                    render={renderItem}
+                    onClick={(item) => this.player.play(item.video_id)}/>
             </div>
         );
     }
