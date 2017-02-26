@@ -13,7 +13,7 @@ let internals = {
 //  Confidence document
 
 internals.paths = {
-    fonts: ['./assets/fonts/*'],
+    fonts: ['./assets/fonts/**/*'],
     styles: ['./assets/styles/**/*'],
     images: ['./assets/images/**/*'],
     misc: ['./assets/misc/*'],
