@@ -14,8 +14,6 @@ class App extends React.Component {
         super(props);
         this.state = { 
             videos: [],
-            random: false,
-            repeat: false,
             idx: null
         };
     }
@@ -42,17 +40,16 @@ class App extends React.Component {
     handleNext() {
         this.setState((prevState) => {
             let { idx, videos } = prevState;
-            if ( this.state.random ) {
+            if ( this.player.state.random ) {
                 let old_idx = idx;
                 while ( idx === old_idx ) {
                     idx = Math.floor(Math.random() * videos.length);
                 }
-            } else if ( !this.state.repeat ) {
+            } else if ( !this.player.state.repeat ) {
                 idx = (idx < videos.length-1)?idx+1:0;
             }
             return { idx };
         });
-
     }
 
     handlePrev() {
@@ -63,17 +60,6 @@ class App extends React.Component {
         });
     }
 
-    toggleRandom() { 
-        this.setState((prevState, props) => {
-            return { random: !prevState.random }
-        });
-    }
-
-    toggleRepeat() {
-        this.setState((prevState, props) => {
-            return { repeat: !prevState.repeat }
-        });
-    }
 
     handleStateChange(event) {
         if ( event.data == PlayerState.ENDED ) {
@@ -114,13 +100,10 @@ class App extends React.Component {
                     The Slack Jukebox
                     </code>
                 </pre>
-                <p>Random: {this.state.random?'ON':'OFF'}, Repeat: {this.state.repeat?'ON':'OFF'}</p>
                 <Player 
                     ref={(player) => this.player = player}
                     onNext={() => this.handleNext()} 
                     onPrev={() => this.handlePrev()} 
-                    onRandom={() => this.toggleRandom()}
-                    onRepeat={() => this.toggleRepeat()}
                     onStateChange={(e) => this.handleStateChange(e)}/>
 
                 <List 

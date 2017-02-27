@@ -18,7 +18,9 @@ export class Player extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            playing: false
+            playing: false,
+            random: false,
+            repeat: false
         }
     }
 
@@ -62,6 +64,25 @@ export class Player extends React.Component {
         });
     }
 
+    /**
+     * random and repeat are mutually exclusive
+     */
+    handleRandom() {
+        this.setState((prevState) => {
+            const random = !prevState.random;
+            const repeat = random?false:true;
+            return { random, repeat };
+        });
+    }
+
+    handleRepeat() {
+        this.setState((prevState) => {
+            const repeat = !prevState.repeat;
+            const random = repeat?false:true
+            return { repeat, random };
+        });
+    }
+
     render() {
 
         const ytStub = {
@@ -72,11 +93,12 @@ export class Player extends React.Component {
             <div>
                 <div style={ytStub} id="yt-player"></div>
                 <Controls 
+                    playerState={this.state}
                     onToggle={() => this.togglePlaying()}
                     onNext={() => this.props.onNext()}
                     onPrev={() => this.props.onPrev()}
-                    onRandom={() => this.props.onRandom()}
-                    onRepeat={() => this.props.onRepeat()}/>
+                    onRandom={() => this.handleRandom()}
+                    onRepeat={() => this.handleRepeat()}/>
             </div>
         );
     }

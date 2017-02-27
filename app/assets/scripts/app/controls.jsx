@@ -15,6 +15,8 @@ class Controls extends React.Component {
             fontSize: 'large'
         };
 
+        const toggleClass = "fa " + (this.props.playerState.playing?"fa-pause":"fa-play");
+
         return (
             <div>
                 <span>
@@ -22,7 +24,7 @@ class Controls extends React.Component {
                         <i style={ctrlStyle} className="fa fa-backward" />
                     </button>
                     <button onClick={() => this.props.onToggle()} className="button button-clear">
-                        <i style={ctrlStyle} className="fa fa-play" />
+                        <i style={ctrlStyle} className={toggleClass} />
                     </button>
                     <button onClick={() => this.props.onNext()} className="button button-clear">
                         <i style={ctrlStyle} className="fa fa-forward" />
