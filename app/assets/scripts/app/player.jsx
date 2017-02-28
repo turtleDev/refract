@@ -70,7 +70,7 @@ export class Player extends React.Component {
     handleRandom() {
         this.setState((prevState) => {
             const random = !prevState.random;
-            const repeat = random?false:true;
+            const repeat = random?false:prevState.repeat;
             return { random, repeat };
         });
     }
@@ -78,7 +78,7 @@ export class Player extends React.Component {
     handleRepeat() {
         this.setState((prevState) => {
             const repeat = !prevState.repeat;
-            const random = repeat?false:true
+            const random = repeat?false:prevState.random;
             return { repeat, random };
         });
     }

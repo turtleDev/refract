@@ -31,10 +31,10 @@ class Controls extends React.Component {
                     </button>
                 </span>
                 <span style={pullRight}>
-                    <button onClick={() => this.props.onRandom()} className="button button-clear">
+                    <button onClick={() => this.props.onRandom()} className={"button " + (this.props.playerState.random?"button-highlight":"button-clear")}>
                         <i style={ctrlStyle} className="fa fa-random" />
                     </button>
-                    <button onClick={() => this.props.onRepeat()} className="button button-clear">
+                    <button onClick={() => this.props.onRepeat()} className={"button " + (this.props.playerState.repeat?"button-hightlight":"button-clear")}>
                         <i style={ctrlStyle} className="fa fa-repeat" />
                     </button>
                 </span>
