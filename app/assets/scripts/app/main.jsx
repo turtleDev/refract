@@ -3,6 +3,7 @@
 import React from 'react';
 
 import List from './list.jsx';
+import Header from './header.jsx';
 import { Player, PlayerState } from './player.jsx';
 
 import Request from './request.js';
@@ -69,12 +70,6 @@ class App extends React.Component {
 
     render() {
 
-        const baseStyles = {
-            maxWidth: '55em',
-            margin: 'auto',
-            padding: '2em 0'
-        };
-
         /* Stateless functional component */
         const renderItem = function(props) {
 
@@ -92,24 +87,44 @@ class App extends React.Component {
             );
         }
 
-        return (
-            <div style={baseStyles}>
-                <h1>Refract</h1>
-                <pre>
-                    <code>
-                    The Slack Jukebox
-                    </code>
-                </pre>
-                <Player 
-                    ref={(player) => this.player = player}
-                    onNext={() => this.handleNext()} 
-                    onPrev={() => this.handlePrev()} 
-                    onStateChange={(e) => this.handleStateChange(e)}/>
+        const headerStyle = {
+            margin: '0',
+            fontSize: '2.8rem',
+            height: '10%',
+            display: 'flex',
+            alignItems: 'center'
+        }
 
+        const mainStyle = {
+            height: '90%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        };
+        
+        const containerStyle = {
+            height:'100%'
+        };
+
+        return (
+            <div style={containerStyle}>
+                <header style={headerStyle}>
+                    <span>Refract</span>
+                </header>
+                <div style={mainStyle}>
+                    <p>You are listening to music from <a href="#">Devs and Hackers</a></p>
+                    <Player 
+                        ref={(player) => this.player = player}
+                        onNext={() => this.handleNext()} 
+                        onPrev={() => this.handlePrev()} 
+                        onStateChange={(e) => this.handleStateChange(e)}/>
+                </div>
+            {/*
                 <List 
                     items={this.state.videos} 
                     render={renderItem}
                     onClick={(item) => this.player.play(item.video_id)}/>
+            */}
             </div>
         );
     }

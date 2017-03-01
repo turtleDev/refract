@@ -6,17 +6,16 @@ class List extends React.Component {
     renderNodes() {
 
         const listStyle = {
-            listStyle: 'none'
+            listStyle: 'none',
+            cursor: 'pointer'
         };
 
         const Render = this.props.render;
 
         const nodes = this.props.items.map((item, index) => {
             return (
-                <li style={listStyle} key={index}>
-                    <a href="javascript: void(0)" onClick={() => this.props.onClick(item)}>
-                        <Render {...item}/>
-                    </a>
+                <li style={listStyle} key={index} onClick={() => this.props.onClick(item)} >
+                    <Render {...item}/>
                 </li>
             );
         });

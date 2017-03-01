@@ -22,6 +22,15 @@ export class Player extends React.Component {
             random: false,
             repeat: false
         }
+        this.playerOpts = {
+            width: '858px',
+            height: '480px',
+            playerVars: {
+                disablekb: 1,
+                modestbranding: 1,
+                fs: 0
+            }
+        };
     }
 
     componentDidMount() {
@@ -38,15 +47,7 @@ export class Player extends React.Component {
 
 
     loadPlayer() {
-        const playerOpts = {
-            width: '100%',
-            playerVars: {
-                disablekb: 1,
-                modestbranding: 1,
-                fs: 0
-            }
-        };
-        this.player = YoutubePlayer('yt-player', playerOpts);
+        this.player = YoutubePlayer('yt-player', this.playerOpts);
         this.player.addEventListener('onStateChange', (data) => {
             this.props.onStateChange(data);
         });
@@ -86,11 +87,16 @@ export class Player extends React.Component {
     render() {
 
         const ytStub = {
-            height: 360
+            height: this.playerOpts.height,
+        };
+
+        const playerStyle = {
+            width: this.playerOpts.width,
+            margin: 'auto'
         };
 
         return (
-            <div>
+            <div style={playerStyle}>
                 <div style={ytStub} id="yt-player"></div>
                 <Controls 
                     playerState={this.state}
