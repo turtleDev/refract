@@ -4,6 +4,20 @@ import React from 'react';
 
 class Header extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeItem: props.defaultItem
+        }
+    }
+
+    setActiveItem(item) {
+        this.setState({
+            activeItem: item
+        });
+        this.props.onNav(item);
+    }
+
     render() {
         return ( 
             <header className="metabar">
@@ -13,7 +27,11 @@ class Header extends React.Component {
                     </div>
                     <div className="metabar-nav">
                         {this.props.navItems.map((item) => 
-                            <div key={item} onClick={() => this.props.onNav(item)} className={"metabar-navitem "+(this.props.activeItem === item?"active":"")}>
+                            <div 
+                                key={item} 
+                                onClick={() => this.setActiveItem(item)} 
+                                className={"metabar-navitem "+(this.state.activeItem === item?"active":"")}>
+
                                 {item}
                             </div>
                         )}

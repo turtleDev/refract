@@ -15,6 +15,7 @@ class App extends React.Component {
         super(props);
         this.name = "Refract";
         this.pages = ["play", "about", "settings"];
+        this.activePage = "play";
         this.state = { 
             videos: [],
             page: "play",
@@ -71,6 +72,10 @@ class App extends React.Component {
         }
     }
 
+    handlePage(page) {
+        this.activePage = page;
+    }
+
     render() {
 
         /* Stateless functional component */
@@ -101,8 +106,8 @@ class App extends React.Component {
                 <Header 
                     name={this.name}
                     navItems={this.pages} 
-                    activeItem={this.state.page}
-                    onNav={(page) => this.setState({page})}/>
+                    defaultItem={this.activePage}
+                    onNav={(page) => this.handleNav(page)} />
                 <div style={centered}>
                     <Player 
                         ref={(player) => this.player = player}
