@@ -4,16 +4,21 @@ exports.register = function(server, options, next) {
 
     const Controllers = {
         ajax: {
-            url: require('../controllers/ajax/url')
+            app: require('../controllers/ajax/app')
         }
     };
 
     server.route([
-    
+
+    {
+        method: 'GET',
+        path: '/v0/teams',
+        config: Controllers.ajax.app.teams
+    },
     {
         method: 'GET',
         path: '/v0/videos',
-        config: Controllers.ajax.url.index
+        config: Controllers.ajax.app.videos
     }
 
     ]);
