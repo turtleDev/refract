@@ -13,8 +13,11 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
+        this.name = "Refract";
+        this.pages = ["play", "about", "settings"];
         this.state = { 
             videos: [],
+            page: "play",
             idx: null
         };
     }
@@ -87,44 +90,30 @@ class App extends React.Component {
             );
         }
 
-        const headerStyle = {
-            margin: '0',
-            fontSize: '2.8rem',
-            height: '10%',
+        const centered = {
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
+            justifyContent: 'space-around'
         }
 
-        const mainStyle = {
-            height: '90%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-        };
-        
-        const containerStyle = {
-            height:'100%'
-        };
-
         return (
-            <div style={containerStyle}>
-                <header style={headerStyle}>
-                    <span>Refract</span>
-                </header>
-                <div style={mainStyle}>
-                    <p>You are listening to music from <a href="#">Devs and Hackers</a></p>
+            <div className="main">
+                <Header 
+                    name={this.name}
+                    navItems={this.pages} 
+                    activeItem={this.state.page}
+                    onNav={(page) => this.setState({page})}/>
+                <div style={centered}>
                     <Player 
                         ref={(player) => this.player = player}
                         onNext={() => this.handleNext()} 
                         onPrev={() => this.handlePrev()} 
                         onStateChange={(e) => this.handleStateChange(e)}/>
                 </div>
-            {/*
                 <List 
                     items={this.state.videos} 
                     render={renderItem}
                     onClick={(item) => this.player.play(item.video_id)}/>
-            */}
             </div>
         );
     }

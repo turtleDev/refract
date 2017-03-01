@@ -23,7 +23,7 @@ export class Player extends React.Component {
             repeat: false
         }
         this.playerOpts = {
-            width: '858px',
+            width: '854px',
             height: '480px',
             playerVars: {
                 disablekb: 1,
