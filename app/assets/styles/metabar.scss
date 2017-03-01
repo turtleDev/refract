@@ -1,0 +1,58 @@
+
+$metabar__height: 60px;
+$metabar__menu-padding: 24px 15px 23px;
+$metabar__navRightSpacing: $metabar__height*20/100;
+
+body {
+    margin-top: $metabar__height;
+    height: calc(100% - #{$metabar__height});
+}
+
+.metabar {
+    position: fixed;
+    z-index: 999;
+    background-color: #fff;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: $metabar__height;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .15);
+}
+
+.metabar-brand {
+    font-size: 2rem;
+}
+
+.metabar-brand::after {
+    content: '';
+    display: block;
+    background: $color_primary;
+    height: 4px;
+    max-width: 35px;
+}
+
+.metabar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $metabar__height;
+}
+
+.metabar-nav {
+    display: flex;
+    flex-direction: row;
+}
+
+.metabar-navitem {
+    display: flex;
+    align-items: center;
+    height: $metabar__height;
+    text-transform: capitalize;
+    padding: 0px 10px;
+    cursor: pointer;
+}
+
+.metabar-navitem.active {
+    border-bottom: 2px solid $color_secondary;
+}
+
