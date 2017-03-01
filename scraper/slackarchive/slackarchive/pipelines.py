@@ -6,6 +6,7 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from slackarchive import models
+from slackarchive import items
 
 class DatabasePipeline(object):
 
@@ -15,27 +16,36 @@ class DatabasePipeline(object):
         self.collision_threshold = -1
         self.active = True
     
-    def open_spider(self, spider):
-        models.init(spider.settings['DB_PATH'])
+    def close_spider(self, spider):
+        models.db.close()
+
+    def update_collision_count(self):
+        self.collisions += 1
+        if self.collision_threshold > 0 and self.collisions > self.collision_threshold:
+            spider.crawler.stop()
+            self.active = False
 
     def process_item(self, item, spider):
 
         if self.active is False:
             return
 
-        u = models.Url(item)
-
-        if u.exists() is True:
-            self.collisions += 1
-            if self.collision_threshold > 0 and self.collisions > self.collision_threshold:
-                spider.crawler.stop()
-                self.active = False
-            return
+        if isinstance(item, items.TeamItem):
+            return self.process_team(item)
         else:
-            u.save()
+            return self.process_video(item)
 
-        return item
+    def process_team(self, item):
+        team, created = models.Team.create_or_get(**dict(item))
+        team.save()
 
-    def close_spider(self, spider):
-        models.cleanup()
+    def process_video(self, item):
+        team, _ = models.Team.create_or_get(**dict(item['team']))
+        item['team'] = team
+        video, created = models.Video.create_or_get(**dict(item))
+        if created is False:
+            self.update_collision_count()
+            return
+        video.save()
+         
 

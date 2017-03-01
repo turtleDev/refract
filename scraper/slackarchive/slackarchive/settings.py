@@ -34,7 +34,10 @@ ITEM_PIPELINES = {
 }
 
 # channels to scrape
-CHANNELS = ['C0DT79Y86']
+CHANNELS = ['music']
+
+# team to query
+TEAM = 'dev-s'
 
 # where to save the files
 DB_PATH = os.getenv('REFRACT_DB_PATH')

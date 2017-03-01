@@ -1,57 +1,28 @@
 # -*- coding: utf-8 -*-
 
-import sqlite3
-import hashlib
+from peewee import *
+import slackarchive.settings as settings
 
-connection = None
-cursor = None
+db = SqliteDatabase(settings.DB_PATH)
 
-class ConnectionNotOpenError(Exception):
-    pass
+class Team(Model):
+    team_id = CharField(unique=True)
+    domain = CharField()
+    name = CharField()
 
-def init(db_path):
-    global connection, cursor
-    connection = sqlite3.connect(db_path)
-    cursor = connection.cursor()
+    class Meta:
+        database = db
+        db_table = 'teams'
 
-def cleanup():
-    connection.commit()
-    connection.close()
+class Video(Model):
+    team = ForeignKeyField(Team, related_name='songs')
+    video_id = CharField(unique=True)
+    title = CharField()
+    duration = CharField()
 
-class Url:
+    class Meta:
+        database = db
+        db_table = 'videos'
 
-    name = 'videos'
-
-    url = None
-
-    def _check_connection(self):
-
-        if connection is None:
-            raise ConnectionNotOpenError()
-
-    def __init__(self, item):
-
-        self.title = item['title']
-        self.duration = item['duration']
-        self.video_id = item['video_id']
-
-        self._check_connection()
-
-        q = 'create table if not exists {}(id integer primary key, video_id varchar, title varchar, duration varchar);'.format(self.name)
-        cursor.execute(q)
-
-    def save(self):
-
-        self._check_connection()
-
-        q = 'insert into {}(video_id, title, duration) values(?, ?, ?)'.format(self.name)
-        result = cursor.execute(q, (self.video_id, self.title, self.duration))
-        connection.commit()
-
-    def exists(self):
-        q = 'select * from {} where video_id=?'.format(self.name)
-        result = cursor.execute(q, (self.video_id,)).fetchone()
-        if result:
-            return True
-        else:
-            return False
+db.connect()
+db.create_tables([Team, Video], safe=True)
