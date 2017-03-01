@@ -4,6 +4,7 @@ import React from 'react';
 
 import List from './list.jsx';
 import Header from './header.jsx';
+import TeamInfo from './teaminfo.jsx';
 import { Player, PlayerState } from './player.jsx';
 
 import Request from './request.js';
@@ -13,27 +14,38 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
+
+        /* will become configurable in v2 */
+        this.team_domain = "dev-s";
+
         this.name = "Refract";
         this.pages = ["play", "about", "settings"];
         this.activePage = "play";
         this.state = { 
             videos: [],
             page: "play",
-            idx: null
+            idx: null,
+            team: null
         };
     }
 
     componentWillMount() {
-        this.loadData();
+        Request('GET', `/v0/teams?domain=${this.team_domain}`).then((response) => {
+            const team = JSON.parse(response).teams[0];
+            this.setState({team});
+            this.loadData();
+        });
     }
 
     componentWillUpdate(nextProps, nextState) {
-        const video_id = nextState.videos[nextState.idx].video_id;
-        this.player.play(video_id);
+        if ( nextState.videos.length ) {
+            const video_id = nextState.videos[nextState.idx].video_id;
+            this.player.play(video_id);
+        }
     }
 
     loadData() {
-        Request('GET', '/v0/videos').then((response) => {
+        Request('GET', `/v0/videos?team_id=${this.state.team.team_id}`).then((response) => {
             const videos = JSON.parse(response).videos;
             this.setState({ 
                 videos,
@@ -97,6 +109,7 @@ class App extends React.Component {
 
         const centered = {
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'space-around'
         }
@@ -109,6 +122,7 @@ class App extends React.Component {
                     defaultItem={this.activePage}
                     onNav={(page) => this.handleNav(page)} />
                 <div style={centered}>
+                    <TeamInfo team={this.state.team} />
                     <Player 
                         ref={(player) => this.player = player}
                         onNext={() => this.handleNext()} 
