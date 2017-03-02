@@ -56,6 +56,18 @@ internals.manifest = {
                 }
             }
         },
+
+        // context injection
+        {
+            plugin: {
+                register: './lib/context.js',
+                options: {
+                    meta: Meta.get('/')
+                }
+            }
+        },
+
+        // database connector
         {
             plugin: {
                 register: './lib/sequelize.js',

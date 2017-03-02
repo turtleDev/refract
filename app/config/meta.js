@@ -15,8 +15,11 @@ let internals = {
 internals.config = {
     $meta: 'App metadata configuration file',
     title: Pkg.name,
-    keywords: ['slack', 'jukebox', 'refract']
-    
+    keywords: ['slack', 'jukebox', 'refract'],
+    website: 'http://refract.turtledev.in',
+    name: 'Refract',
+    description: 'Refract is a Jukebox for public Slack teams',
+    shortDesc: 'Jukebox for Public Slack teams',
 };
 
 internals.store = new Confidence.Store(internals.config);
