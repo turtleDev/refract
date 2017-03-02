@@ -5,6 +5,10 @@ import YoutubePlayer from 'youtube-player';
 
 import Controls from './controls.jsx';
 
+/**
+ * youtube player state
+ * https://developers.google.com/youtube/iframe_api_reference#Events
+ */
 export let PlayerState = {
     ENDED: 0,
     PLAYING: 1,
@@ -40,7 +44,9 @@ export class Player extends React.Component {
 
     play(id) {
         if ( !id && !this.state.playing ) { return; }
-        this.state.playing = true;
+        this.setState({
+            playing: true
+        });
         this.player.loadVideoById(id);
         this.player.playVideo();
     }
