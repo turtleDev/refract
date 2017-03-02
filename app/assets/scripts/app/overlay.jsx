@@ -33,7 +33,7 @@ export class Overlay extends React.Component {
 
     render() {
 
-        const style = {
+        let style = {
             display: this.state.active?'block':'none',
             position: 'absolute',
             background: 'white',
@@ -57,6 +57,6 @@ export class Overlay extends React.Component {
 
 export class OverlayItem extends React.Component {
     render() {
-        return <div className="container">{this.props.children}</div>
+        return <div style={this.props.style}>{this.props.children}</div>
     }
 }

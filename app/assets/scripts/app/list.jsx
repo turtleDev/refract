@@ -24,7 +24,9 @@ class List extends React.Component {
 
     render() {
         return (
-            <ul>{this.renderNodes()}</ul>
+            <div>
+                <ul>{this.renderNodes()}</ul>
+            </div>
         );
     }
 }

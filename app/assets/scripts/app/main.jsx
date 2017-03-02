@@ -20,7 +20,7 @@ class App extends React.Component {
         this.team_domain = "dev-s";
 
         this.name = "Refract";
-        this.pages = ["play", "about"];
+        this.pages = ["play", "about", "tracklist"];
         this.activePage = "play";
         this.idx = 0;
         this.videos = [];
@@ -115,7 +115,9 @@ class App extends React.Component {
             justifyContent: 'space-around'
         };
 
-        const aboutStyle = {
+        const overlayStyle = {
+            maxWidth: '854px',
+            margin: 'auto',
             padding: '4rem 0'
         };
 
@@ -137,18 +139,18 @@ class App extends React.Component {
                     />
                 </div>
                 <Overlay ref={(overlay) => this.overlay = overlay}>
-                    <OverlayItem key="about">
-                        <div style={aboutStyle}>
-                            <h1>Refract - The Public Slack Jukebox</h1>
-                            <p>Hi There! How are you doing this fine day?</p>
-                        </div>
+                    <OverlayItem style={overlayStyle} key="about">
+                        <h1>Refract - The Public Slack Jukebox</h1>
+                        <p>Hi There! How are you doing this fine day?</p>
+                    </OverlayItem>
+                    <OverlayItem style={overlayStyle} key="tracklist">
+                        <List 
+                            items={this.videos} 
+                            render={renderItem}
+                            onClick={(item, index) => { this.player.play(item.video_id); this.idx = index } }
+                        />
                     </OverlayItem>
                 </Overlay>
-                <List 
-                    items={this.videos} 
-                    render={renderItem}
-                    onClick={(item, index) => { this.player.play(item.video_id); this.idx = index } }
-                />
             </div>
         );
     }
