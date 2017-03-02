@@ -5,6 +5,8 @@ import YoutubePlayer from 'youtube-player';
 
 import Controls from './controls.jsx';
 
+import Utils from './utils.js';
+
 /**
  * youtube player state
  * https://developers.google.com/youtube/iframe_api_reference#Events
@@ -26,9 +28,11 @@ export class Player extends React.Component {
             random: false,
             repeat: false
         }
+
+        const isMobile = Utils.isMobile();
         this.playerOpts = {
-            width: '854px',
-            height: '480px',
+            width: !isMobile?'854px':'300px',
+            height: !isMobile?'480px':'168px',
             playerVars: {
                 disablekb: 1,
                 modestbranding: 1,

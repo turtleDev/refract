@@ -123,7 +123,7 @@ class App extends React.Component {
         const overlayStyle = {
             maxWidth: '854px',
             margin: 'auto',
-            padding: '4rem 0'
+            padding: '3rem 2rem'
         };
 
         return (
