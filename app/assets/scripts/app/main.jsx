@@ -21,7 +21,7 @@ class App extends React.Component {
         this.team_domain = "dev-s";
 
         this.name = "Refract";
-        this.pages = ["play", "about", "tracklist"];
+        this.pages = ["play", "tracklist", "about"];
         this.activePage = "play";
         this.idx = 0;
         this.videos = [];
