@@ -25,6 +25,8 @@ class App extends React.Component {
         this.idx = 0;
         this.videos = [];
         this.overlay = null;
+        this.player = null;
+        this.list = null;
         this.team = null;
     }
 
@@ -40,6 +42,7 @@ class App extends React.Component {
         if ( videos.length ) {
             const video_id = videos[idx].video_id;
             this.player.play(video_id);
+            this.list.setActive(idx);
         }
     }
 
@@ -87,6 +90,12 @@ class App extends React.Component {
 
     handleNav(page) {
         this.overlay.setItem(page);
+    }
+
+    handleListClick(item, idx) {
+        this.idx = idx;
+        this.player.play(item.video_id); 
+        this.list.setActive(idx);
     }
 
     render() {
@@ -145,9 +154,11 @@ class App extends React.Component {
                     </OverlayItem>
                     <OverlayItem style={overlayStyle} key="tracklist">
                         <List 
+                            ref={(list) => this.list = list}
+                            activeIdx={this.idx}
                             items={this.videos} 
                             render={renderItem}
-                            onClick={(item, index) => { this.player.play(item.video_id); this.idx = index } }
+                            onClick={(item, index) => { this.handleListClick(item, index); } }
                         />
                     </OverlayItem>
                 </Overlay>

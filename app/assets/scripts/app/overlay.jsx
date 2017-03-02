@@ -43,8 +43,11 @@ export class Overlay extends React.Component {
         };
 
 
-        const content = this.getChildren().map((child) => {
-            return child.key == this.state.active?child:null;
+        const content = this.getChildren().map((child, idx) => {
+            const style = {
+                display: child.key == this.state.active?'block':'none'
+            }
+            return <div style={style} key={idx}>{child}</div>;
         });
 
         return (
