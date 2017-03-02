@@ -14,10 +14,9 @@ let internals = {
 
 internals.config = {
     $meta: 'App metadata configuration file',
-    title: Pkg.name,
+    title: 'Refract | Music for you, by you',
     keywords: ['slack', 'jukebox', 'refract'],
     website: 'http://refract.turtledev.in',
-    name: 'Refract',
     description: 'Refract is a Jukebox for public Slack teams',
     shortDesc: 'Jukebox for Public Slack teams',
 };

@@ -6,23 +6,32 @@
   <title>{{meta.title}}</title>
 
   <meta http-equiv="cleartype" content="on" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="apple-mobile-web-app-capable" content="no">
   <meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1,user-scalable=yes">
   <link rel="icon" type="image/x-icon" href="">
 
+
+  <!-- Control the behavior of search engine crawling and indexing -->
+  <meta name="robots" content="index,follow,noodp"><!-- All Search Engines -->
+  <meta name="googlebot" content="index,follow"><!-- Google Specific -->
+
+  <meta itemprop="name" content="{{meta.title}}">
+  <meta itemprop="description" content="{{meta.description}}">
+
   <link rel="stylesheet" media="all" href="/css/index.css">
-  <meta name="application-name" content="Refract">
+  <meta name="application-name" content="{{meta.title}}">
   <meta name="description" content="{{meta.description}}">
+  <meta name="url" content="{{meta.website}}">
   <meta name="google" content="nositelinkssearchbox">
   <meta name="subject" content="{{meta.description}}">
-  <meta name="abstract" content="{{meta.description}}">
-  <meta name="summary" content="{{meta.description}}">
+  <meta name="abstract" content="{{meta.shortDesc}}">
+  <meta name="summary" content="{{meta.shortDesc}}">
 
   <!-- open graph -->
   <meta property="og:url" content="{{meta.website}}">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{{meta.title}}">
-  <meta property="og:image" content="">
   <meta property="og:description" content="{{meta.description}}">
   <meta property="og:site_name" content="Refract">
   <meta property="og:locale" content="en_US">
