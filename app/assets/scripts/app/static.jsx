@@ -30,7 +30,7 @@ export class AboutPage extends React.Component {
                     You can follow the development at it's <a href="http://github.com/turtledev/refract">github</a> repository.
                 </p>
                 <p>
-                    More music for you!
+                    Music for you, by you.
                 </p>
             </div>
         );
