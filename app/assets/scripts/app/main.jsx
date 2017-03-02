@@ -7,6 +7,7 @@ import Header from './header.jsx';
 import TeamInfo from './teaminfo.jsx';
 import { Overlay, OverlayItem } from './overlay.jsx';
 import { Player, PlayerState } from './player.jsx';
+import { AboutPage } from './static.jsx';
 
 import Request from './request.js';
 import Utils from './utils.js';
@@ -149,8 +150,7 @@ class App extends React.Component {
                 </div>
                 <Overlay ref={(overlay) => this.overlay = overlay}>
                     <OverlayItem style={overlayStyle} key="about">
-                        <h1>Refract - The Public Slack Jukebox</h1>
-                        <p>Hi There! How are you doing this fine day?</p>
+                        <AboutPage />
                     </OverlayItem>
                     <OverlayItem style={overlayStyle} key="tracklist">
                         <List 
