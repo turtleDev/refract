@@ -3,8 +3,8 @@
 import React from 'react';
 
 class List extends React.Component {
-    renderNodes() {
 
+    renderNodes() {
         const listStyle = {
             listStyle: 'none',
             cursor: 'pointer'
@@ -14,7 +14,7 @@ class List extends React.Component {
 
         const nodes = this.props.items.map((item, index) => {
             return (
-                <li style={listStyle} key={index} onClick={() => this.props.onClick(item)} >
+                <li style={listStyle} key={index} onClick={() => this.props.onClick(item, index)} >
                     <Render {...item}/>
                 </li>
             );

@@ -5,6 +5,7 @@ import React from 'react';
 import List from './list.jsx';
 import Header from './header.jsx';
 import TeamInfo from './teaminfo.jsx';
+import { Overlay, OverlayItem } from './overlay.jsx';
 import { Player, PlayerState } from './player.jsx';
 
 import Request from './request.js';
@@ -19,62 +20,58 @@ class App extends React.Component {
         this.team_domain = "dev-s";
 
         this.name = "Refract";
-        this.pages = ["play", "about", "settings"];
+        this.pages = ["play", "about"];
         this.activePage = "play";
-        this.state = { 
-            videos: [],
-            page: "play",
-            idx: null,
-            team: null
-        };
+        this.idx = 0;
+        this.videos = [];
+        this.overlay = null;
+        this.team = null;
     }
 
     componentWillMount() {
         Request('GET', `/v0/teams?domain=${this.team_domain}`).then((response) => {
-            const team = JSON.parse(response).teams[0];
-            this.setState({team});
+            this.team = JSON.parse(response).teams[0];
             this.loadData();
         });
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        if ( nextState.videos.length ) {
-            const video_id = nextState.videos[nextState.idx].video_id;
+    play() {
+        let { idx, videos } = this;
+        if ( videos.length ) {
+            const video_id = videos[idx].video_id;
             this.player.play(video_id);
         }
     }
 
     loadData() {
-        Request('GET', `/v0/videos?team_id=${this.state.team.team_id}`).then((response) => {
-            const videos = JSON.parse(response).videos;
-            this.setState({ 
-                videos,
-                idx: 0
-            });
+        Request('GET', `/v0/videos?team_id=${this.team.team_id}`).then((response) => {
+            this.videos = JSON.parse(response).videos;
+            this.forceUpdate();
+            this.play();
         });
     }
 
     handleNext() {
-        this.setState((prevState) => {
-            let { idx, videos } = prevState;
-            if ( this.player.state.random ) {
-                let old_idx = idx;
-                while ( idx === old_idx ) {
-                    idx = Math.floor(Math.random() * videos.length);
-                }
-            } else if ( !this.player.state.repeat ) {
-                idx = (idx < videos.length-1)?idx+1:0;
+
+        let { idx, videos } = this;
+        if ( this.player.state.random ) {
+            let old_idx = idx;
+            while ( idx === old_idx ) {
+                idx = Math.floor(Math.random() * videos.length);
             }
-            return { idx };
-        });
+        } else if ( !this.player.state.repeat ) {
+            idx = (idx < videos.length-1)?idx+1:0;
+        }
+
+        this.idx = idx;
+        this.play();
     }
 
     handlePrev() {
-        this.setState((prevState) => {
-            let { idx, videos } = prevState;
-            idx = (idx > 0)?idx-1:videos.length -1;
-            return { idx };
-        });
+        let { idx, videos } = this;
+        idx = (idx > 0)?idx-1:videos.length -1;
+        this.idx = idx;
+        this.play();
     }
 
 
@@ -86,6 +83,10 @@ class App extends React.Component {
 
     handlePage(page) {
         this.activePage = page;
+    }
+
+    handleNav(page) {
+        this.overlay.setItem(page);
     }
 
     render() {
@@ -105,14 +106,18 @@ class App extends React.Component {
                     </span>
                 </span>
             );
-        }
+        };
 
         const centered = {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'space-around'
-        }
+        };
+
+        const aboutStyle = {
+            padding: '4rem 0'
+        };
 
         return (
             <div className="main">
@@ -120,19 +125,30 @@ class App extends React.Component {
                     name={this.name}
                     navItems={this.pages} 
                     defaultItem={this.activePage}
-                    onNav={(page) => this.handleNav(page)} />
+                    onNav={(page) => this.handleNav(page)}
+                />
                 <div style={centered}>
-                    <TeamInfo team={this.state.team} />
+                    <TeamInfo team={this.team} />
                     <Player 
                         ref={(player) => this.player = player}
                         onNext={() => this.handleNext()} 
                         onPrev={() => this.handlePrev()} 
-                        onStateChange={(e) => this.handleStateChange(e)}/>
+                        onStateChange={(e) => this.handleStateChange(e)}
+                    />
                 </div>
+                <Overlay ref={(overlay) => this.overlay = overlay}>
+                    <OverlayItem key="about">
+                        <div style={aboutStyle}>
+                            <h1>Refract - The Public Slack Jukebox</h1>
+                            <p>Hi There! How are you doing this fine day?</p>
+                        </div>
+                    </OverlayItem>
+                </Overlay>
                 <List 
-                    items={this.state.videos} 
+                    items={this.videos} 
                     render={renderItem}
-                    onClick={(item) => this.player.play(item.video_id)}/>
+                    onClick={(item, index) => { this.player.play(item.video_id); this.idx = index } }
+                />
             </div>
         );
     }
