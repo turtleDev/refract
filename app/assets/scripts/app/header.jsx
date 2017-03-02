@@ -22,7 +22,7 @@ class Header extends React.Component {
         return ( 
             <header className="metabar">
                 <div className="container metabar-inner">
-                    <div className="metabar-brand">
+                    <div className="metabar-brand" onClick={() => this.setActiveItem(this.props.defaultItem)}>
                         {this.props.name}
                     </div>
                     <div className="metabar-nav">
