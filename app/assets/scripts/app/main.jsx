@@ -29,9 +29,8 @@ class App extends React.Component {
         this.player = null;
         this.list = null;
         this.team = null;
-    }
 
-    componentWillMount() {
+        // init
         Request('GET', `/v0/teams?domain=${this.team_domain}`).then((response) => {
             this.team = JSON.parse(response).teams[0];
             this.loadData();
@@ -83,10 +82,6 @@ class App extends React.Component {
         if ( event.data == PlayerState.ENDED ) {
             this.handleNext();
         }
-    }
-
-    handlePage(page) {
-        this.activePage = page;
     }
 
     handleNav(page) {
