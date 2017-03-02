@@ -6,3 +6,6 @@ __pycache__
 
 # local database
 source.db
+
+# config files
+app/config/config.js
