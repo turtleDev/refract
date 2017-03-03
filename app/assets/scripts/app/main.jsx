@@ -100,13 +100,16 @@ class App extends React.Component {
         const renderItem = function(props) {
 
             const infoStyle = {
-                float: 'right'
+                display: 'flex',
+                justifyContent: 'space-between'
             };
 
             return (
-                <span>
-                    {props.title}
-                    <span style={infoStyle}>
+                <span style={infoStyle}>
+                    <span>
+                        {props.title}
+                    </span>
+                    <span>
                         ({props.duration})
                     </span>
                 </span>
