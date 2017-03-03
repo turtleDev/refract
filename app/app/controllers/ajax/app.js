@@ -13,7 +13,7 @@ exports.videos = {
         if ( team_id ) {
 
             /* find a way to do this without executing raw queries */
-            const query = 'select video_id, duration, title from teams join videos on teams.id == videos.team_id where teams.team_id=? and where title is not null';
+            const query = 'select video_id, duration, title from teams join videos on teams.id == videos.team_id where teams.team_id=? and title is not null';
 
             db._sequelize.query(query, { 
                 replacements: [team_id], 
@@ -27,7 +27,7 @@ exports.videos = {
             })
             .catch((err) => {
                 console.error(err);
-                return reply(Boom.internal(err));;
+                return reply(Boom.internal(err));
             });
 
         } else {
