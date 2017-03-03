@@ -27,7 +27,7 @@ exports.videos = {
             })
             .catch((err) => {
                 console.error(err);
-                return reply(Boom.internal(err)).code(500);
+                return reply(Boom.internal(err));;
             });
 
         } else {
