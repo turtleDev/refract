@@ -1,11 +1,12 @@
 # editor junk
 *.swp
+*.swo
 
 # python junk
 __pycache__
 
 # local database
-source.db
+*.db
 
 # config files
 app/config/config.js

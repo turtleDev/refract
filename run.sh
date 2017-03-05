@@ -16,7 +16,7 @@ exists() {
 try() {
     exists $1
     if [[ $? != 0 ]]; then
-        log_err "$1 not found. try running $0 --install-deps"
+        log_err "$1 not found. please install $1"
     else
         exec $@ 
         return $?
@@ -35,7 +35,7 @@ install_node_packages() {
     elif [[ $YARN == '0' ]]; then
         exec yarn install
     else
-        log_err "can't find any node package managers"
+        log_err "can't find any nodejs package managers"
     fi
 }
 

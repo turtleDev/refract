@@ -34,15 +34,11 @@ ITEM_PIPELINES = {
 }
 
 # channels to scrape
-CHANNELS = ['music']
+CHANNELS = os.environ['REFRACT_CHANNELS'].split(',')
 
 # team to query
-TEAM = 'dev-s'
+TEAM = os.environ['REFRACT_TEAM_DOMAIN']
 
 # where to save the files
-DB_PATH = os.getenv('REFRACT_DB_PATH')
-
-if DB_PATH is None:
-    raise DatabaseNotSpecified(
-        'please set REFRACT_DB_PATH environment variable to the path to the database')
+DB_PATH = os.environ['REFRACT_DB_PATH']
 
