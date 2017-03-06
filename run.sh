@@ -46,6 +46,12 @@ do
 case $i in 
     --collect)
         cd scraper/slackarchive
+        REFRACT_REDUNDENCY_THRESHOLD=-1 
+        try scrapy crawl archive
+        exit
+        ;;
+    --update)
+        cd scraper/slackarchive
         try scrapy crawl archive
         exit
         ;;
@@ -66,4 +72,4 @@ case $i in
 esac
 done
 
-echo "usage: $0 [--collect | --install-deps | --main ]"
+echo "usage: $0 [--collect | --update | --install-deps | --main ]"

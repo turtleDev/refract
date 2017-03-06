@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import logging
 
 # Scrapy settings for slackarchive project
 #
@@ -25,9 +26,13 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko
 # delay to make sure we don't go over api limits
 DOWNLOAD_DELAY = 1
 
+# be less verbose
+LOG_LEVEL = logging.INFO
+
 # keep retrying, never give up
 RETRY_ENABLE = True
 RETRY_HTTP_CODES = [429]
+
 # Item pipeline
 ITEM_PIPELINES = {
     'slackarchive.pipelines.DatabasePipeline': 100
@@ -42,3 +47,5 @@ TEAM = os.environ['REFRACT_TEAM_DOMAIN']
 # where to save the files
 DB_PATH = os.environ['REFRACT_DB_PATH']
 
+# how many collisions to tolerate
+REDUNDENCY_THRESHOLD = int(os.getenv('REFRACT_REDUNDENCY_THRESHOLD'))
