@@ -46,7 +46,7 @@ run_scraper() {
     # kill any previous instances
     pkill scrapy
 
-    try scrapy crawl archive &>> $APPROOT/scraper.log
+    try scrapy crawl archive &>> $REFRACT_LOG_PATH/scraper.log
 }
 
 
