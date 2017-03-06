@@ -24,7 +24,7 @@ class ArchiveSpider(scrapy.Spider):
     def _get_link(self, source):
 
         # So a quick google search reveals that youtube ids are 11 characters long
-        pattern = "<(https?:\/\/(www\.)?youtube\.com\/watch\?v=...........)>"
+        pattern = "(https?:\/\/(www\.)?youtube\.com\/watch\?v=...........)"
         match = re.search(pattern, source)
 
         if match is not None:
@@ -34,9 +34,6 @@ class ArchiveSpider(scrapy.Spider):
         
 
     def start_requests(self):
-        # for cid in self.settings.get('CHANNELS'):
-        #     url = encode_query(self._api_url, { 'channel': cid });
-        #     yield scrapy.Request(url)
         team_domain = self.settings['TEAM']
         team_discovery = encode_query(self._team_discovery, {'domain': team_domain})
         yield scrapy.Request(url=team_discovery, callback=self.parse_team)
