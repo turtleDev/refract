@@ -4,6 +4,8 @@ source ./config.sh
 
 trap exit SIGINT SIGTERM
 
+APPROOT=$(dirname $(realpath $0))
+
 log_err() {
     echo '[Error]' $@
 }
@@ -39,6 +41,13 @@ install_node_packages() {
     fi
 }
 
+run_scraper() {
+
+    # kill any previous instances
+    pkill scrapy
+
+    try scrapy crawl archive &>> $APPROOT/scraper.log
+}
 
 
 for i in "$@"
@@ -47,19 +56,18 @@ case $i in
     --collect)
         cd scraper/slackarchive
         REFRACT_REDUNDENCY_THRESHOLD=-1 
-        try scrapy crawl archive
+        run_scraper
         exit
         ;;
     --update)
         cd scraper/slackarchive
-        try scrapy crawl archive
+        run_scraper
         exit
         ;;
     --install-deps)
-        THIS=$PWD
         cd app/
         install_node_packages
-        cd $THIS
+        cd $APPROOT
         cd scraper/slackarchive
         try pip install -r requirements.txt
         exit

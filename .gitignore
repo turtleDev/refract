@@ -10,3 +10,6 @@ __pycache__
 
 # config files
 app/config/config.js
+
+# log files
+*.log
