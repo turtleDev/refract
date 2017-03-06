@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(sequenlize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
 
     const schema = {
         name: DataTypes.STRING,
@@ -13,5 +13,5 @@ module.exports = function(sequenlize, DataTypes) {
         timestamps: false,
     };
 
-    return sequenlize.define('Teams', schema, options);
+    return sequelize.define('Teams', schema, options);
 };

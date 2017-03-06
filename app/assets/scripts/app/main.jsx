@@ -47,7 +47,7 @@ class App extends React.Component {
     }
 
     loadData() {
-        Request('GET', `/v0/videos?team_id=${this.team.team_id}`).then((response) => {
+        Request('GET', `/v0/videos?id=${this.team.id}`).then((response) => {
             this.videos = JSON.parse(response).videos;
             this.forceUpdate();
             this.play();

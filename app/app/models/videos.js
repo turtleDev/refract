@@ -3,7 +3,6 @@
 module.exports = function(sequelize, DataTypes) {
 
     const schema = {
-        team_id: DataTypes.STRING,
         video_id: DataTypes.STRING,
         title: DataTypes.STRING,
         duration: DataTypes.STRING

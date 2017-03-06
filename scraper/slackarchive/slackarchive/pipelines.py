@@ -8,6 +8,7 @@
 from slackarchive import models
 from slackarchive import items
 
+
 class DatabasePipeline(object):
 
     def __init__(self, threshold):
@@ -15,6 +16,7 @@ class DatabasePipeline(object):
         self.collisions = 0
         self.collision_threshold = threshold
         self.active = True
+        self.teams = {}
     
     def close_spider(self, spider):
         models.db.close()
@@ -40,16 +42,35 @@ class DatabasePipeline(object):
             return self.process_video(item, spider)
 
     def process_team(self, item, spider):
-        team, created = models.Team.create_or_get(**dict(item))
-        team.save()
+
+        try:
+            team = models.Team.select().where(
+                models.Team.team_id == item['team_id']).get()
+        except:
+            models.Team.create(**dict(item))
+
+        self.teams[team.team_id] = team
 
     def process_video(self, item, spider):
-        team, _ = models.Team.create_or_get(**dict(item['team']))
-        item['team'] = team
-        video, created = models.Video.create_or_get(**dict(item))
-        if created is False:
+
+        # see if the team exists in the local cache, if not, create it
+        team = item['team']
+        if team['team_id'] not in self.teams.keys():
+            self.process_team(team, spider)
+        team = self.teams[team['team_id']]
+
+        # if the video doesn't exist create it
+        try:
+            video = models.Video.select().where(
+                models.Video.video_id == item['video_id']).get()
             self.update_collision_count(spider)
-            return
-        video.save()
+        except:
+            video = models.Video.create(**dict(item))
          
+        # create a relationship, if it doesn't exist
+        try:
+            mapping = models.TeamVideoMap.select().where(
+                    (models.TeamVideoMap.team == team) & (models.TeamVideoMap.video == video)).get()
+        except:
+            models.TeamVideoMap.create(team=team, video=video)
 

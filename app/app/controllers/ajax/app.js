@@ -13,7 +13,9 @@ exports.videos = {
         if ( team_id ) {
 
             /* find a way to do this without executing raw queries */
-            const query = 'select video_id, duration, title from teams join videos on teams.id == videos.team_id where teams.team_id=? and title is not null';
+            const query = 'select videos.video_id, videos.duration, videos.title ' +
+                          'from videos join map on map.video_id == videos.id '+
+                          'where map.team_id=? and title is not null';
 
             db._sequelize.query(query, { 
                 replacements: [team_id], 
@@ -62,8 +64,14 @@ exports.teams = {
         const db = request.server.db;
 
         const domain = request.query.domain;
-        const query = {};
-        if ( domain) {
+        /**
+         * team_id corresponds to the ID used by slack archive, but
+         * we'll use the ids populated by our database engine
+         */
+        const query = {
+            attributes: ['id', 'domain', 'name']
+        };
+        if ( domain ) {
             query.where = { domain };
         }
 
