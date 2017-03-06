@@ -47,7 +47,7 @@ class DatabasePipeline(object):
             team = models.Team.select().where(
                 models.Team.team_id == item['team_id']).get()
         except:
-            models.Team.create(**dict(item))
+            team = models.Team.create(**dict(item))
 
         self.teams[team.team_id] = team
 
