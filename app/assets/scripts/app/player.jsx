@@ -62,6 +62,7 @@ export class Player extends React.Component {
             this.props.onStateChange(data);
         });
     }
+        // this.activePage = "home";
 
     togglePlaying() {
         if ( this.state.playing ) {

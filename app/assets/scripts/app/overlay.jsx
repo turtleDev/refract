@@ -4,24 +4,6 @@ import React from 'react';
 
 export class Overlay extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            active: false
-        }
-    }
-
-    setItem(item) {
-        const keys = this.getChildren().map((c) => c.key);
-        if ( keys.indexOf(item) == -1 ) {
-            this.setState({active: false});
-        }
-        else {
-            this.setState({active: item});
-        }
-    }
-
     getChildren() {
         let children = this.props.children;
         if ( !Array.isArray(children) ) {
@@ -33,23 +15,29 @@ export class Overlay extends React.Component {
 
     render() {
 
+        // should the overlay be shown?
+        let shouldDisplay = false;
+
+        const content = this.getChildren().map((child, idx) => {
+            const style = {
+                display: child.key == this.props.activeItem?'block':'none'
+            }
+
+            // if even one item is active, display the overlay
+            shouldDisplay = shouldDisplay || ( style.display  != 'none' );
+
+            return <div style={style} key={idx}>{child}</div>;
+        });
+
         let style = {
-            display: this.state.active?'block':'none',
+            display: shouldDisplay?'block':'none',
             position: 'absolute',
             background: 'white',
             top: 0,
             left: 0,
             width: '100%'
         };
-
-
-        const content = this.getChildren().map((child, idx) => {
-            const style = {
-                display: child.key == this.state.active?'block':'none'
-            }
-            return <div style={style} key={idx}>{child}</div>;
-        });
-
+    
         return (
             <div style={style}>
                 {content}

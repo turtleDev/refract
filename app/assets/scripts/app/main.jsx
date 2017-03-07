@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * TODO:
+ *  * replace all error messages with notifications
+ */
 import React from 'react';
 
 import List from './list.jsx';
@@ -17,12 +21,8 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        /* will become configurable in v2 */
-        this.team_domain = "dev-s";
-
         this.name = "Refract";
         this.pages = ["home", "tracklist", "about"];
-        this.activePage = "home";
         this.idx = 0;
         this.videos = [];
         this.overlay = null;
@@ -30,9 +30,20 @@ class App extends React.Component {
         this.list = null;
         this.team = null;
 
-        // init
-        Request('GET', `/v0/teams?domain=${this.team_domain}`).then((response) => {
-            this.team = JSON.parse(response).teams[0];
+        this.state = {
+            activePage: 'home'
+        };
+
+        Request('GET', `/v0/teams`).then((response) => {
+
+            const { teams } = JSON.parse(response);
+            if ( !teams.length ) {
+                console.warn('no teams available')
+                return
+            }
+
+            // select the first item
+            this.team = teams[0];
             this.loadData();
         });
     }
@@ -134,8 +145,8 @@ class App extends React.Component {
                 <Header 
                     name={this.name}
                     navItems={this.pages} 
-                    defaultItem={this.activePage}
-                    onNav={(page) => this.handleNav(page)}
+                    activeItem={this.state.activePage}
+                    onNav={(page) => this.setState({activePage: page})}
                 />
                 <div style={centered}>
                     <TeamInfo team={this.team} />
@@ -146,7 +157,7 @@ class App extends React.Component {
                         onStateChange={(e) => this.handleStateChange(e)}
                     />
                 </div>
-                <Overlay ref={(overlay) => this.overlay = overlay}>
+                <Overlay activeItem={this.state.activePage}>
                     <OverlayItem style={overlayStyle} key="about">
                         <AboutPage />
                     </OverlayItem>

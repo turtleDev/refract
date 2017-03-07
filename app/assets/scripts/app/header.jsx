@@ -6,8 +6,9 @@ class Header extends React.Component {
 
     constructor(props) {
         super(props);
+        this.defaultItem = props.activeItem
         this.state = {
-            activeItem: props.defaultItem
+            activeItem: props.activeItem
         }
     }
 
@@ -22,7 +23,7 @@ class Header extends React.Component {
         return ( 
             <header className="metabar">
                 <div className="container metabar-inner">
-                    <div className="metabar-brand" onClick={() => this.setActiveItem(this.props.defaultItem)}>
+                    <div className="metabar-brand" onClick={() => this.setActiveItem(this.defaultItem)}>
                         {this.props.name}
                     </div>
                     <div className="metabar-nav">
