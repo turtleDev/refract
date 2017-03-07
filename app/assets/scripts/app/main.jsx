@@ -23,17 +23,16 @@ class App extends React.Component {
 
         this.name = "Refract";
         this.pages = ["home", "tracklist", "about"];
-        this.idx = 0;
         this.videos = [];
         this.player = null;
-        this.list = null;
-        this.team = null;
 
         this.state = {
-            activePage: 'home'
+            activePage: 'home',
+            activeVideoIdx: 0,
+            team: null
         };
 
-        Request('GET', `/v0/teams`).then((response) => {
+        Request('GET', '/v0/teams').then((response) => {
 
             const { teams } = JSON.parse(response);
             if ( !teams.length ) {
@@ -41,32 +40,39 @@ class App extends React.Component {
                 return
             }
 
-            // select the first item
-            this.team = teams[0];
+            // select the first available team
+            this.setState({ team: teams[0] });
             this.loadData();
         });
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if ( this.state.activePage !== prevState.activePage ) {
+            return;
+        }
+        this.play();
+    }
+
     play() {
-        let { idx, videos } = this;
+        let { videos } = this;
+        let idx = this.state.activeVideoIdx;
         if ( videos.length ) {
             const video_id = videos[idx].video_id;
             this.player.play(video_id);
-            this.list.setActive(idx);
         }
     }
 
     loadData() {
-        Request('GET', `/v0/videos?id=${this.team.id}`).then((response) => {
+        Request('GET', `/v0/videos?id=${this.state.team.id}`).then((response) => {
             this.videos = JSON.parse(response).videos;
-            this.forceUpdate();
             this.play();
         });
     }
 
     handleNext() {
 
-        let { idx, videos } = this;
+        let { videos } = this;
+        let idx = this.state.activeVideoIdx;
         if ( this.player.state.random ) {
             let old_idx = idx;
             while ( idx === old_idx ) {
@@ -76,15 +82,18 @@ class App extends React.Component {
             idx = (idx < videos.length-1)?idx+1:0;
         }
 
-        this.idx = idx;
-        this.play();
+        this.setState({
+            activeVideoIdx: idx
+        });
     }
 
     handlePrev() {
-        let { idx, videos } = this;
+        let { videos } = this;
+        let idx = this.state.activeVideoIdx;
         idx = (idx > 0)?idx-1:videos.length -1;
-        this.idx = idx;
-        this.play();
+        this.setState({
+            activeVideoIdx: idx
+        });
     }
 
 
@@ -92,12 +101,6 @@ class App extends React.Component {
         if ( event.data == PlayerState.ENDED ) {
             this.handleNext();
         }
-    }
-
-    handleListClick(item, idx) {
-        this.idx = idx;
-        this.player.play(item.video_id); 
-        this.list.setActive(idx);
     }
 
     render() {
@@ -144,7 +147,7 @@ class App extends React.Component {
                     onNav={(page) => this.setState({activePage: page})}
                 />
                 <div style={centered}>
-                    <TeamInfo team={this.team} />
+                    <TeamInfo team={this.state.team} />
                     <Player 
                         ref={(player) => this.player = player}
                         onNext={() => this.handleNext()} 
@@ -158,11 +161,10 @@ class App extends React.Component {
                     </OverlayItem>
                     <OverlayItem style={overlayStyle} key="tracklist">
                         <List 
-                            ref={(list) => this.list = list}
-                            activeIdx={this.idx}
+                            activeIdx={this.state.activeVideoIdx}
                             items={this.videos} 
                             render={renderItem}
-                            onClick={(item, index) => { this.handleListClick(item, index); } }
+                            onClick={(item, index) => { this.setState({activeVideoIdx: index}); } }
                         />
                     </OverlayItem>
                 </Overlay>

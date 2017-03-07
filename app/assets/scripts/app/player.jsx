@@ -45,7 +45,6 @@ export class Player extends React.Component {
         this.loadPlayer();
     }
 
-
     play(id) {
         if ( !id && !this.state.playing ) { return; }
         this.setState({
