@@ -3,7 +3,7 @@
 import React from 'react';
 import YoutubePlayer from 'youtube-player';
 
-import Controls from './controls.jsx';
+import { Controls, ControlsState } from './controls.jsx';
 
 import Utils from './utils.js';
 
@@ -62,7 +62,6 @@ export class Player extends React.Component {
             this.props.onStateChange(data);
         });
     }
-        // this.activePage = "home";
 
     togglePlaying() {
         if ( this.state.playing ) {
@@ -106,11 +105,15 @@ export class Player extends React.Component {
             margin: 'auto'
         };
 
+        const ctrlState = (this.state.playing?ControlsState.PLAYING:0) |
+            (this.state.random?ControlsState.SHUFFLE:0) |
+            (this.state.repeat?ControlsState.REPEAT:0);
+
         return (
             <div style={playerStyle}>
                 <div style={ytStub} id="yt-player"></div>
                 <Controls 
-                    playerState={this.state}
+                    state={ctrlState}
                     onToggle={() => this.togglePlaying()}
                     onNext={() => this.props.onNext()}
                     onPrev={() => this.props.onPrev()}

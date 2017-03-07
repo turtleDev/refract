@@ -25,7 +25,6 @@ class App extends React.Component {
         this.pages = ["home", "tracklist", "about"];
         this.idx = 0;
         this.videos = [];
-        this.overlay = null;
         this.player = null;
         this.list = null;
         this.team = null;
@@ -93,10 +92,6 @@ class App extends React.Component {
         if ( event.data == PlayerState.ENDED ) {
             this.handleNext();
         }
-    }
-
-    handleNav(page) {
-        this.overlay.setItem(page);
     }
 
     handleListClick(item, idx) {
