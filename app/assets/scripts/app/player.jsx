@@ -45,6 +45,9 @@ export class Player extends React.Component {
         this.loadPlayer();
     }
 
+    /**
+     * This method is called by the parent component via a ref
+     */
     play(id) {
         if ( !id && !this.state.playing ) { return; }
         this.setState({

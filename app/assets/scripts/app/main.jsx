@@ -37,7 +37,7 @@ class App extends React.Component {
             const { teams } = JSON.parse(response);
             if ( !teams.length ) {
                 console.warn('no teams available')
-                return
+                return;
             }
 
             // select the first available team
@@ -47,6 +47,12 @@ class App extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        /**
+         * there are two kind of state changes that can occur: page switch
+         * or track switch.
+         *
+         * if this is a track switch, play the currently selected video
+         */
         if ( this.state.activePage !== prevState.activePage ) {
             return;
         }
