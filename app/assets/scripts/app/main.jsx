@@ -1,10 +1,8 @@
 'use strict';
 
-/**
- * TODO:
- *  * replace all error messages with notifications
- */
 import React from 'react';
+
+import Alert from 'react-s-alert';
 
 import List from './list.jsx';
 import Header from './header.jsx';
@@ -36,7 +34,17 @@ class App extends React.Component {
 
             const { teams } = JSON.parse(response);
             if ( !teams.length ) {
-                console.warn('no teams available')
+                /**
+                 * if there are no teams, then this message appears too quickly
+                 *
+                 * delay it a little
+                 */
+                setTimeout(() => {
+                    Alert.error('No team data available', {
+                        timeout: 'none'
+                    });
+                }, 1500);
+
                 return;
             }
 
@@ -71,6 +79,10 @@ class App extends React.Component {
     loadData() {
         Request('GET', `/v0/videos?id=${this.state.team.id}`).then((response) => {
             this.videos = JSON.parse(response).videos;
+            if ( !this.videos.length ) {
+                Alert.error('No video data available');
+                return;
+            }
             this.play();
         });
     }
@@ -144,6 +156,10 @@ class App extends React.Component {
             padding: '3rem 2rem'
         };
 
+        const ghost = {
+            height: 0
+        };
+
         return (
             <div className="main">
                 <Header 
@@ -174,6 +190,13 @@ class App extends React.Component {
                         />
                     </OverlayItem>
                 </Overlay>
+                <div style={ghost}>
+                    <Alert 
+                        position='bottom-left' 
+                        timeout='none'
+                        effect='slide'
+                    />                
+                </div>
             </div>
         );
     }

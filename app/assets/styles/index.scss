@@ -2,6 +2,12 @@
 @import 'vendor/milligram/src/milligram';
 @import 'vendor/font-awesome/scss/font-awesome';
 
+/**
+ * react-s-alert style sheets
+ */
+@import 'vendor/s-alert-default';
+@import 'vendor/s-alert-css-effects/slide';
+
 @import 'base';
 @import 'metabar';
 
