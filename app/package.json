@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "slack jukebox",
   "main": "index.js",
+  "engines": { "node": "^7.0.0" },
   "scripts": {
     "dev": "NODE_ENV=development gulp dev",
     "start": "node server.js",
