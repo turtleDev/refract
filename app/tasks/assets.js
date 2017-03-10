@@ -2,6 +2,7 @@
 
 const Gulp = require('gulp');
 const Sass = require('gulp-sass');
+const CleanCSS = require('gulp-clean-css');
 const Autoprefixer = require('gulp-autoprefixer');
 const Paths = require('../config/assets');
 
@@ -14,6 +15,7 @@ Gulp.task('styles', function() {
             browsers: ['last 2 versions'],
             cascade: false
         }))
+        .pipe(CleanCSS())
         .pipe(Gulp.dest('.build/css'));
 });
 
