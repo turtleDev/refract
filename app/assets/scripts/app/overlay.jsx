@@ -20,7 +20,9 @@ export class Overlay extends React.Component {
 
         const content = this.getChildren().map((child, idx) => {
             const style = {
-                display: child.key == this.props.activeItem?'block':'none'
+                display: child.key == this.props.activeItem?'block':'none',
+                height: '100%',
+                width: '100%'
             }
 
             // if even one item is active, display the overlay
@@ -35,7 +37,8 @@ export class Overlay extends React.Component {
             background: 'white',
             top: 0,
             left: 0,
-            width: '100%'
+            width: '100%',
+            height: '100%'
         };
     
         return (

@@ -156,6 +156,11 @@ class App extends React.Component {
             padding: '3rem 2rem'
         };
 
+        const playlistStyle = Object.assign({}, overlayStyle, {
+            height: '100%',
+            overflow: 'auto'
+        });
+
         const ghost = {
             height: 0
         };
@@ -181,7 +186,7 @@ class App extends React.Component {
                     <OverlayItem style={overlayStyle} key="about">
                         <AboutPage />
                     </OverlayItem>
-                    <OverlayItem style={overlayStyle} key="tracklist">
+                    <OverlayItem style={playlistStyle} key="tracklist">
                         <List 
                             activeIdx={this.state.activeVideoIdx}
                             items={this.videos} 
