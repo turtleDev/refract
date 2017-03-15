@@ -7,7 +7,7 @@ import Alert from 'react-s-alert';
 import List from './list.jsx';
 import Header from './header.jsx';
 import TeamInfo from './teaminfo.jsx';
-import { Overlay, OverlayItem } from './overlay.jsx';
+import { PageContainer, Page } from './page.jsx'
 import { Player, PlayerState } from './player.jsx';
 import { AboutPage } from './static.jsx';
 
@@ -121,6 +121,14 @@ class App extends React.Component {
         }
     }
 
+    handleNav(page) {
+        if ( this.state.activePage != page ) {
+            this.setState({
+                activePage: page
+            });
+        }
+    }
+
     render() {
 
         /* Stateless functional component */
@@ -143,23 +151,25 @@ class App extends React.Component {
             );
         };
 
-        const centered = {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-around'
-        };
-
-        const overlayStyle = {
+        const pageStyle = {
             maxWidth: '854px',
-            margin: 'auto',
+            margin: '0 auto',
             padding: '3rem 2rem'
         };
 
-        const playlistStyle = Object.assign({}, overlayStyle, {
+        const playlistStyle = Object.assign({}, pageStyle, {
             height: '100%',
             overflow: 'auto'
         });
+
+        const playerStyle =  {
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
+        };
+
 
         const ghost = {
             height: 0
@@ -171,30 +181,30 @@ class App extends React.Component {
                     name={this.name}
                     navItems={this.pages} 
                     activeItem={this.state.activePage}
-                    onNav={(page) => this.setState({activePage: page})}
+                    onNav={(page) => this.handleNav(page)}
                 />
-                <div style={centered}>
-                    <TeamInfo team={this.state.team} />
-                    <Player 
-                        ref={(player) => this.player = player}
-                        onNext={() => this.handleNext()} 
-                        onPrev={() => this.handlePrev()} 
-                        onStateChange={(e) => this.handleStateChange(e)}
-                    />
-                </div>
-                <Overlay activeItem={this.state.activePage}>
-                    <OverlayItem style={overlayStyle} key="about">
+                <PageContainer activePage={this.state.activePage}>
+                    <Page style={playerStyle} key="home">
+                        <TeamInfo team={this.state.team} />
+                        <Player 
+                            ref={(player) => this.player = player}
+                            onNext={() => this.handleNext()} 
+                            onPrev={() => this.handlePrev()} 
+                            onStateChange={(e) => this.handleStateChange(e)}
+                        />
+                    </Page>
+                    <Page style={pageStyle} key="about">
                         <AboutPage />
-                    </OverlayItem>
-                    <OverlayItem style={playlistStyle} key="tracklist">
+                    </Page>
+                    <Page style={playlistStyle} key="tracklist">
                         <List 
                             activeIdx={this.state.activeVideoIdx}
                             items={this.videos} 
                             render={renderItem}
                             onClick={(item, index) => { this.setState({activeVideoIdx: index}); } }
                         />
-                    </OverlayItem>
-                </Overlay>
+                    </Page>
+                </PageContainer>
                 <div style={ghost}>
                     <Alert 
                         position='bottom-left' 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export class Overlay extends React.Component {
+export class PageContainer extends React.Component {
 
     getChildren() {
         let children = this.props.children;
@@ -19,13 +19,14 @@ export class Overlay extends React.Component {
         let shouldDisplay = false;
 
         const content = this.getChildren().map((child, idx) => {
+
             const style = {
-                display: child.key == this.props.activeItem?'block':'none',
+                display: child.key == this.props.activePage?'block':'none',
                 height: '100%',
                 width: '100%'
             }
 
-            // if even one item is active, display the overlay
+            // if even one item is active, display the page
             shouldDisplay = shouldDisplay || ( style.display  != 'none' );
 
             return <div style={style} key={idx}>{child}</div>;
@@ -49,7 +50,7 @@ export class Overlay extends React.Component {
     }
 }
 
-export class OverlayItem extends React.Component {
+export class Page extends React.Component {
     render() {
         return <div style={this.props.style}>{this.props.children}</div>
     }

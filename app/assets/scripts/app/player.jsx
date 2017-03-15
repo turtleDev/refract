@@ -104,7 +104,7 @@ export class Player extends React.Component {
 
         const playerStyle = {
             width: this.playerOpts.width,
-            margin: 'auto'
+            margin: '0 auto'
         };
 
         const ctrlState = (this.state.playing?ControlsState.PLAYING:0) |
