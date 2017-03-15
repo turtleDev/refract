@@ -24,7 +24,7 @@ class TeamInfo extends React.Component {
     render() {
         const style = {
             margin: 0,
-            paddingTop: '2rem'
+            padding: '2rem 0'
         };
         return (
             <div style={style}>{this.renderText()}</div>

@@ -3,7 +3,7 @@
 import React from 'react';
 import YoutubePlayer from 'youtube-player';
 
-import Controls from './controls.jsx';
+import { Controls, ControlsState } from './controls.jsx';
 
 import Utils from './utils.js';
 
@@ -45,7 +45,9 @@ export class Player extends React.Component {
         this.loadPlayer();
     }
 
-
+    /**
+     * This method is called by the parent component via a ref
+     */
     play(id) {
         if ( !id && !this.state.playing ) { return; }
         this.setState({
@@ -102,14 +104,18 @@ export class Player extends React.Component {
 
         const playerStyle = {
             width: this.playerOpts.width,
-            margin: 'auto'
+            margin: '0 auto'
         };
+
+        const ctrlState = (this.state.playing?ControlsState.PLAYING:0) |
+            (this.state.random?ControlsState.SHUFFLE:0) |
+            (this.state.repeat?ControlsState.REPEAT:0);
 
         return (
             <div style={playerStyle}>
                 <div style={ytStub} id="yt-player"></div>
                 <Controls 
-                    playerState={this.state}
+                    state={ctrlState}
                     onToggle={() => this.togglePlaying()}
                     onNext={() => this.props.onNext()}
                     onPrev={() => this.props.onPrev()}

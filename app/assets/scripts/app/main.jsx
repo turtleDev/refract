@@ -2,10 +2,12 @@
 
 import React from 'react';
 
+import Alert from 'react-s-alert';
+
 import List from './list.jsx';
 import Header from './header.jsx';
 import TeamInfo from './teaminfo.jsx';
-import { Overlay, OverlayItem } from './overlay.jsx';
+import { PageContainer, Page } from './page.jsx'
 import { Player, PlayerState } from './player.jsx';
 import { AboutPage } from './static.jsx';
 
@@ -17,46 +19,78 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        /* will become configurable in v2 */
-        this.team_domain = "dev-s";
-
         this.name = "Refract";
         this.pages = ["home", "tracklist", "about"];
-        this.activePage = "home";
-        this.idx = 0;
         this.videos = [];
-        this.overlay = null;
         this.player = null;
-        this.list = null;
-        this.team = null;
 
-        // init
-        Request('GET', `/v0/teams?domain=${this.team_domain}`).then((response) => {
-            this.team = JSON.parse(response).teams[0];
+        this.state = {
+            activePage: 'home',
+            activeVideoIdx: 0,
+            team: null
+        };
+
+        Request('GET', '/v0/teams').then((response) => {
+
+            const { teams } = JSON.parse(response);
+            if ( !teams.length ) {
+                /**
+                 * if there are no teams, then this message appears too quickly
+                 *
+                 * delay it a little
+                 */
+                setTimeout(() => {
+                    Alert.error('No team data available', {
+                        timeout: 'none'
+                    });
+                }, 1500);
+
+                return;
+            }
+
+            // select the first available team
+            this.setState({ team: teams[0] });
             this.loadData();
         });
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        /**
+         * there are two kind of state changes that can occur: page switch
+         * or track switch.
+         *
+         * if this is a track switch, play the currently selected video
+         */
+        if ( this.state.activePage !== prevState.activePage ) {
+            return;
+        }
+        this.play();
+    }
+
     play() {
-        let { idx, videos } = this;
+        let { videos } = this;
+        let idx = this.state.activeVideoIdx;
         if ( videos.length ) {
             const video_id = videos[idx].video_id;
             this.player.play(video_id);
-            this.list.setActive(idx);
         }
     }
 
     loadData() {
-        Request('GET', `/v0/videos?id=${this.team.id}`).then((response) => {
+        Request('GET', `/v0/videos?id=${this.state.team.id}`).then((response) => {
             this.videos = JSON.parse(response).videos;
-            this.forceUpdate();
+            if ( !this.videos.length ) {
+                Alert.error('No video data available');
+                return;
+            }
             this.play();
         });
     }
 
     handleNext() {
 
-        let { idx, videos } = this;
+        let { videos } = this;
+        let idx = this.state.activeVideoIdx;
         if ( this.player.state.random ) {
             let old_idx = idx;
             while ( idx === old_idx ) {
@@ -66,15 +100,18 @@ class App extends React.Component {
             idx = (idx < videos.length-1)?idx+1:0;
         }
 
-        this.idx = idx;
-        this.play();
+        this.setState({
+            activeVideoIdx: idx
+        });
     }
 
     handlePrev() {
-        let { idx, videos } = this;
+        let { videos } = this;
+        let idx = this.state.activeVideoIdx;
         idx = (idx > 0)?idx-1:videos.length -1;
-        this.idx = idx;
-        this.play();
+        this.setState({
+            activeVideoIdx: idx
+        });
     }
 
 
@@ -85,13 +122,11 @@ class App extends React.Component {
     }
 
     handleNav(page) {
-        this.overlay.setItem(page);
-    }
-
-    handleListClick(item, idx) {
-        this.idx = idx;
-        this.player.play(item.video_id); 
-        this.list.setActive(idx);
+        if ( this.state.activePage != page ) {
+            this.setState({
+                activePage: page
+            });
+        }
     }
 
     render() {
@@ -116,17 +151,28 @@ class App extends React.Component {
             );
         };
 
-        const centered = {
+        const pageStyle = {
+            maxWidth: '854px',
+            margin: '0 auto',
+            padding: '3rem 2rem'
+        };
+
+        const playlistStyle = Object.assign({}, pageStyle, {
+            height: '100%',
+            overflow: 'auto'
+        });
+
+        const playerStyle =  {
+            height: '100%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'space-around'
+            justifyContent: 'center'
         };
 
-        const overlayStyle = {
-            maxWidth: '854px',
-            margin: 'auto',
-            padding: '3rem 2rem'
+
+        const ghost = {
+            height: 0
         };
 
         return (
@@ -134,32 +180,38 @@ class App extends React.Component {
                 <Header 
                     name={this.name}
                     navItems={this.pages} 
-                    defaultItem={this.activePage}
+                    activeItem={this.state.activePage}
                     onNav={(page) => this.handleNav(page)}
                 />
-                <div style={centered}>
-                    <TeamInfo team={this.team} />
-                    <Player 
-                        ref={(player) => this.player = player}
-                        onNext={() => this.handleNext()} 
-                        onPrev={() => this.handlePrev()} 
-                        onStateChange={(e) => this.handleStateChange(e)}
-                    />
-                </div>
-                <Overlay ref={(overlay) => this.overlay = overlay}>
-                    <OverlayItem style={overlayStyle} key="about">
+                <PageContainer activePage={this.state.activePage}>
+                    <Page style={playerStyle} key="home">
+                        <TeamInfo team={this.state.team} />
+                        <Player 
+                            ref={(player) => this.player = player}
+                            onNext={() => this.handleNext()} 
+                            onPrev={() => this.handlePrev()} 
+                            onStateChange={(e) => this.handleStateChange(e)}
+                        />
+                    </Page>
+                    <Page style={pageStyle} key="about">
                         <AboutPage />
-                    </OverlayItem>
-                    <OverlayItem style={overlayStyle} key="tracklist">
+                    </Page>
+                    <Page style={playlistStyle} key="tracklist">
                         <List 
-                            ref={(list) => this.list = list}
-                            activeIdx={this.idx}
+                            activeIdx={this.state.activeVideoIdx}
                             items={this.videos} 
                             render={renderItem}
-                            onClick={(item, index) => { this.handleListClick(item, index); } }
+                            onClick={(item, index) => { this.setState({activeVideoIdx: index}); } }
                         />
-                    </OverlayItem>
-                </Overlay>
+                    </Page>
+                </PageContainer>
+                <div style={ghost}>
+                    <Alert 
+                        position='bottom-left' 
+                        timeout='none'
+                        effect='slide'
+                    />                
+                </div>
             </div>
         );
     }

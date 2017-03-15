@@ -2,8 +2,13 @@
 
 import React from 'react';
 
+export const ControlsState = {
+    PLAYING: 1 << 0,
+    REPEAT: 1 << 1,
+    SHUFFLE: 1 << 2
+};
 
-class Controls extends React.Component {
+export class Controls extends React.Component {
 
     render() {
 
@@ -15,7 +20,12 @@ class Controls extends React.Component {
             fontSize: 'large'
         };
 
-        const toggleClass = "fa " + (this.props.playerState.playing?"fa-pause":"fa-play");
+        const state = this.props.state;
+        const isPlaying = state & ControlsState.PLAYING;
+        const isRepeat = state & ControlsState.REPEAT;
+        const isShuffle = state & ControlsState.SHUFFLE;
+
+        const toggleClass = "fa " + (isPlaying?"fa-pause":"fa-play");
 
         return (
             <div>
@@ -31,10 +41,10 @@ class Controls extends React.Component {
                     </button>
                 </span>
                 <span style={pullRight}>
-                    <button onClick={() => this.props.onRandom()} className={"button " + (this.props.playerState.random?"button-highlight":"button-clear")}>
+                    <button onClick={() => this.props.onRandom()} className={"button " + (isShuffle?"button-highlight":"button-clear")}>
                         <i style={ctrlStyle} className="fa fa-random" />
                     </button>
-                    <button onClick={() => this.props.onRepeat()} className={"button " + (this.props.playerState.repeat?"button-hightlight":"button-clear")}>
+                    <button onClick={() => this.props.onRepeat()} className={"button " + (isRepeat?"button-hightlight":"button-clear")}>
                         <i style={ctrlStyle} className="fa fa-repeat" />
                     </button>
                 </span>
@@ -43,4 +53,3 @@ class Controls extends React.Component {
     }
 };
 
-export default Controls;
