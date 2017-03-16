@@ -12,6 +12,7 @@ import Utils from './utils.js';
  * https://developers.google.com/youtube/iframe_api_reference#Events
  */
 export let PlayerState = {
+    UNSTARTED: -1,
     ENDED: 0,
     PLAYING: 1,
     PAUSED: 2,
@@ -19,7 +20,7 @@ export let PlayerState = {
     CUED: 5,
 
     // non standard
-    READY: 1337
+    READY: -1
 }
     
 export class Player extends React.Component {
@@ -63,13 +64,8 @@ export class Player extends React.Component {
 
     loadPlayer() {
         this.player = YoutubePlayer('yt-player', this.playerOpts);
-        this.player.addEventListener('onStateChange', (data) => {
+        this.player.on('stateChange', (data) => {
             this.props.onStateChange(data);
-        });
-
-        /* tell the parent component that the player is ready */
-        this.props.onStateChange({
-            data: PlayerState.READY
         });
     }
 
