@@ -122,8 +122,12 @@ class App extends React.Component {
 
 
     handleStateChange(event) {
-        if ( event.data == PlayerState.ENDED ) {
-            this.handleNext();
+        switch(event.data) {
+            case PlayerState.ENDED:
+                this.handleNext();
+                break;
+            case PlayerState.READY:
+                Utils.removePreloader();
         }
     }
 

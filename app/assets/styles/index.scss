@@ -1,14 +1,14 @@
-@import 'vendor/normalize';
+@import 'normalize.css';
+@import 'loaders.css';
+
 @import 'vendor/milligram/src/milligram';
 @import 'vendor/font-awesome/scss/font-awesome';
 
-/**
- * react-s-alert style sheets
- */
 @import 'vendor/s-alert-default';
 @import 'vendor/s-alert-css-effects/slide';
 
 @import 'base';
+@import 'preload';
 @import 'scrollbar';
 @import 'metabar';
 
