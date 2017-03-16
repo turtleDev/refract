@@ -80,7 +80,13 @@ class App extends React.Component {
         Request('GET', `/v0/videos?id=${this.state.team.id}`).then((response) => {
             this.videos = JSON.parse(response).videos;
             if ( !this.videos.length ) {
-                Alert.error('No video data available');
+
+                setTimeout(() => {
+                    Alert.error('No video data available', {
+                        timeout: 'none'
+                    });
+                }, 1500);
+
                 return;
             }
             this.play();
