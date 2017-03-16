@@ -8,9 +8,9 @@ exports.videos = {
 
         const db = request.server.db;
 
-        const team_id = request.query.team_id;
+        const id = request.query.id;
 
-        if ( team_id ) {
+        if ( id ) {
 
             /* find a way to do this without executing raw queries */
             const query = 'select videos.video_id, videos.duration, videos.title ' +
@@ -18,7 +18,7 @@ exports.videos = {
                           'where map.team_id=? and title is not null';
 
             db._sequelize.query(query, { 
-                replacements: [team_id], 
+                replacements: [id], 
                 types: db._sequelize.QueryTypes.SELECT
             })
             .then((videos) => {
@@ -28,6 +28,7 @@ exports.videos = {
                 return reply(payload);
             })
             .catch((err) => {
+
                 console.error(err);
                 return reply(Boom.internal(err));
             });
@@ -43,13 +44,17 @@ exports.videos = {
                 videos = videos.map((video) => {
 
                     return video.get({plain: true});
-                });
+                }).filter(
+
+                    (video) => !!video.title
+                );
 
                 const payload = { videos };
 
                 return reply(payload);
             })
             .catch((err) => {
+
                 console.error(err);
                 return reply(Boom.internal(err)).code(500);
             });
@@ -88,6 +93,7 @@ exports.teams = {
             return reply(payload);
         })
         .catch((err) => {
+
             console.error(err);
             return reply(Boom.internal(err)).code(500);
         });
