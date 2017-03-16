@@ -1,4 +1,5 @@
 @import 'normalize.css';
+@import 'loaders.css';
 
 @import 'vendor/milligram/src/milligram';
 @import 'vendor/font-awesome/scss/font-awesome';
@@ -7,6 +8,7 @@
 @import 'vendor/s-alert-css-effects/slide';
 
 @import 'base';
+@import 'preload';
 @import 'scrollbar';
 @import 'metabar';
 

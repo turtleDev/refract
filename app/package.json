@@ -26,6 +26,7 @@
     "hoek": "^4.0.2",
     "inert": "^4.0.2",
     "joi": "^9.0.4",
+    "loaders.css": "^0.1.2",
     "normalize.css": "^5.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
