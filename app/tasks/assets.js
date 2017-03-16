@@ -2,6 +2,7 @@
 
 const Gulp = require('gulp');
 const Sass = require('gulp-sass');
+const SassImporter = require('sass-module-importer');
 const CleanCSS = require('gulp-clean-css');
 const Autoprefixer = require('gulp-autoprefixer');
 const Paths = require('../config/assets');
@@ -10,7 +11,7 @@ const Paths = require('../config/assets');
 
 Gulp.task('styles', function() {
     Gulp.src('./assets/styles/index.scss')
-        .pipe(Sass().on('error', Sass.logError))
+        .pipe(Sass({ importer: SassImporter() }).on('error', Sass.logError))
         .pipe(Autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
