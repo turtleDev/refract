@@ -9,18 +9,94 @@
     left: 0;
     background: white;
     z-index: 1000;
+    transition: opacity 1s, visibility 1s;
     &.done {
         opacity: 0;
         visibility: hidden;
     }
+
     .loader {
+        text-align: center;
         display: flex;
+        flex-direction: column;
         justify-content: center;
+        align-items: center;
+        .message { 
+            font-family: monospace; 
+            font-size: 2rem;
+        }
+        .message:after {
+            content: " ...";
+        }
     }
-    .loader > * > div {
-        background: $color-primary;
-        width: 6px;
-        animation-duration: 1s;
+
+    /**
+     * css-tape animation from 
+     * http://codepen.io/jordanoaragao/pen/EoGsm
+     */
+    .tape {
+        width: 100px; 
+        height: 30px; 
+        border:1px solid #333;
+        border: none;
+        overflow:hidden;
+        position:relative;
+        background: rgba(0, 0, 0, .3);
+        border-radius:5px;
+        box-shadow:0px 35px 0 -5px #333, 0 -5px 0 0px #232323, 0 -25px 0 -5px $color-primary, -25px -30px 0 0px #232323, -25px 30px 0 0px #232323, 25px -30px 0 0px #232323, 25px 30px 0 0px #232323, 20px  10px 0 5px #232323,  20px  -10px 0 5px #232323, -20px -10px 0 5px #232323,-20px 10px 0 5px #232323;
+        animation:tape2 1.5s linear infinite alternate;
     }
-    transition: opacity 1s, visibility 1s;
+
+    .tape-container {
+        padding: 40px;
+    }
+
+    .tape:after, 
+    .tape:before {
+        content:"";
+        border-radius:100%;
+        width: 38px;
+        height: 38px;
+        display:block;
+        position:absolute;
+        border: 5px dashed #fff;
+        margin:-9px auto;
+        top:0;
+        bottom: 0;transform:rotate(0deg) scale(.4);
+        animation:tape 4s linear infinite;
+    }
+
+    .tape:after{
+        left: -10px;
+        box-shadow:0 0 0 4px #fff, 0 0 0 65px #000;
+    }
+    .tape:before{
+        right: -10px;
+        box-shadow:0 0 0 4px #fff, 0 0 0 35px #000;
+    }
+
+    @keyframes tape{
+      0%{transform:rotate(0deg) scale(.4);}
+      100%{transform:rotate(-360deg) scale(.4);}
+    }
+
+    @keyframes tape2{
+       0%{ transform: perspective(500px) rotateX(0deg) rotateZ(0deg) ;}
+      100%{ transform: perspective(500px) rotateX(0deg) rotateZ(0deg);}
+    }
+
+    @keyframes reveal {
+        from {
+            opacity: 0.0;
+        }
+        to {
+            opacity: 1.0;
+        }
+    }
+
+    .preload-error {
+        opacity: 0;
+        animation: reveal 1s 15s forwards;
+    }
+
 }
