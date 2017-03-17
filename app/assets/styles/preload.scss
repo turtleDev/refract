@@ -50,6 +50,13 @@
     .tape-container {
         padding: 40px;
     }
+    .tape-label {
+        position: relative;
+        top: -56px;
+        font-family: monospace;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 0.8);
+    }
 
     .tape:after, 
     .tape:before {
