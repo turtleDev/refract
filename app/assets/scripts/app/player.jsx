@@ -20,7 +20,7 @@ export let PlayerState = {
     CUED: 5,
 
     // non standard
-    READY: -1
+    READY: -2
 }
     
 export class Player extends React.Component {
@@ -66,6 +66,12 @@ export class Player extends React.Component {
         this.player = YoutubePlayer('yt-player', this.playerOpts);
         this.player.on('stateChange', (data) => {
             this.props.onStateChange(data);
+        });
+        this.player.on('ready', (data) => {
+            const fakeEvent = {
+                data: PlayerState.READY
+            };
+            this.props.onStateChange(fakeEvent);
         });
     }
 
