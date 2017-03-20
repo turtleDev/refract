@@ -61,8 +61,6 @@ class App extends React.Component {
             const { videos } = yield Request('GET', `/v0/videos?id=${self.state.team.id}`).then(parse);
             self.videos = videos;
 
-            console.log(self.videos);
-
             if ( !self.videos.length ) {
 
                 setTimeout(() => {

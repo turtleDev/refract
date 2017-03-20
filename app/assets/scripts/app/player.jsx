@@ -61,10 +61,23 @@ export class Player extends React.Component {
         this.player.playVideo();
     }
 
+    handleStateChange(event) {
+        if ( event.data === PlayerState.PLAYING ) {
+            this.setState({ playing: true });
+        } else if ( event.data === PlayerState.PAUSED ) {
+            this.setState({ playing: false });
+        }
+    }
+
 
     loadPlayer() {
         this.player = YoutubePlayer('yt-player', this.playerOpts);
         this.player.on('stateChange', (data) => {
+
+            // handle our own state change
+            this.handleStateChange(data);
+
+            // notify our parent of the state change
             this.props.onStateChange(data);
         });
         this.player.on('ready', (data) => {
@@ -75,13 +88,15 @@ export class Player extends React.Component {
         });
     }
 
-    togglePlaying() {
+    componentDidUpdate() {
         if ( this.state.playing ) {
-            this.player.pauseVideo();
-        } else {
             this.player.playVideo();
+        } else {
+            this.player.pauseVideo();
         }
+    }
 
+    togglePlaying() {
         this.setState({
             playing: !this.state.playing
         });
