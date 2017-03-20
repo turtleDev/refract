@@ -73,7 +73,7 @@ var devCompiler = Webpack(devConfig);
 
 Gulp.task('webpack:dev-build', function() {
 
-    devCompiler.watch({}, function(err, stats) {
+    devCompiler.watch({poll: true}, function(err, stats) {
         if (err) {
             throw new Gutil.PluginError('webpack', err);
         }
