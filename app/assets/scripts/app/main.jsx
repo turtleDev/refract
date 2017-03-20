@@ -1,5 +1,7 @@
 'use strict';
 
+import co from 'co';
+
 import React from 'react';
 
 import Alert from 'react-s-alert';
@@ -17,8 +19,8 @@ import Utils from './utils.js';
 class App extends React.Component {
 
     constructor(props) {
-        super(props);
 
+        super(props);
         this.name = "Refract";
         this.pages = ["home", "tracklist", "about"];
         this.videos = [];
@@ -30,15 +32,20 @@ class App extends React.Component {
             team: null
         };
 
-        Request('GET', '/v0/teams').then((response) => {
+        this.init();
+    }
 
-            const { teams } = JSON.parse(response);
+    init() {
+
+        const self = this;
+
+        return co(function *init() {
+
+            const parse = JSON.parse.bind(JSON);
+
+            const { teams } = yield Request('GET', '/v0/teams').then(parse)
+
             if ( !teams.length ) {
-                /**
-                 * if there are no teams, then this message appears too quickly
-                 *
-                 * delay it a little
-                 */
                 setTimeout(() => {
                     Alert.error('No team data available', {
                         timeout: 'none'
@@ -49,8 +56,33 @@ class App extends React.Component {
             }
 
             // select the first available team
-            this.setState({ team: teams[0] });
-            this.loadData();
+            self.setState({ team: teams[0] });
+
+            const { videos } = yield Request('GET', `/v0/videos?id=${self.state.team.id}`).then(parse);
+            self.videos = videos;
+
+            console.log(self.videos);
+
+            if ( !self.videos.length ) {
+
+                setTimeout(() => {
+                    Alert.error('No video data available', {
+                        timeout: 'none'
+                    });
+                }, 1500);
+
+                return;
+            }
+
+            self.play();
+
+        }).catch((err) => {
+
+            Alert.error('Aw snap. Something broke.', {
+                timeout: 'none'
+            });
+
+            console.error(err);
         });
     }
 
@@ -76,22 +108,6 @@ class App extends React.Component {
         }
     }
 
-    loadData() {
-        Request('GET', `/v0/videos?id=${this.state.team.id}`).then((response) => {
-            this.videos = JSON.parse(response).videos;
-            if ( !this.videos.length ) {
-
-                setTimeout(() => {
-                    Alert.error('No video data available', {
-                        timeout: 'none'
-                    });
-                }, 1500);
-
-                return;
-            }
-            this.play();
-        });
-    }
 
     handleNext() {
 
