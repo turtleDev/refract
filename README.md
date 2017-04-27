@@ -13,7 +13,7 @@ Refract collects the youtube links posted on channels and then creates a playlis
 
 ## Usage
 
-_note_: Things are sort of broken right now, so if things don't work, don't paic, and open and issue. :)  
+_note_: Things are sort of broken right now, so if things don't work, don't panic, and open an issue. :)  
 
 
 ```bash
