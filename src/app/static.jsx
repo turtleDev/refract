@@ -16,11 +16,11 @@ export class AboutPage extends React.Component {
                     What if all you wanted to do was listen to some music? You'd have to manually
                     click on those links, or ask someone to create a play list. Some make it harder
                     than the others (spotify in particular has excellent integration with slack),
-                    but not everyone is on spotiy ):. A majority of these links are youtube links,
+                    but not everyone is on spotify ):. A majority of these links are youtube links,
                     and here's where refract comes in.
                 </p>
                 <p>
-                    Refract collects the youtube links from channels in your public slackteam, and generates
+                    Refract collects the youtube links from channels in your public slack team, and generates
                     track list you can navigate and play!
                 </p>
                 <p>
