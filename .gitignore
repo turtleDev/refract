@@ -1,15 +1,21 @@
-# editor junk
-*.swp
-*.swo
+# See https://help.github.com/ignore-files/ for more about ignoring files.
 
-# python junk
-__pycache__
+# dependencies
+/node_modules
 
-# local database
-*.db
+# testing
+/coverage
 
-# config files
-app/config/config.js
+# production
+/build
 
-# log files
-*.log
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
