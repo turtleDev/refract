@@ -42,8 +42,12 @@ class App extends React.Component {
         return co(function *init() {
 
             const parse = JSON.parse.bind(JSON);
+            const transform = (tracks) => tracks.map(track => {
+                track.video_id = /v=(.{11})$/.exec(track.url)[1]
+                return track
+            });
 
-            const { teams } = yield Request('GET', '/v0/teams').then(parse)
+            const teams = yield Request('GET', 'http://localhost:8080/v0/teams').then(parse)
 
             if ( !teams.length ) {
                 setTimeout(() => {
@@ -58,8 +62,9 @@ class App extends React.Component {
             // select the first available team
             self.setState({ team: teams[0] });
 
-            const { videos } = yield Request('GET', `/v0/videos?id=${self.state.team.id}`).then(parse);
+            const videos = yield Request('GET', `http://localhost:8080/v0/tracks?id=${self.state.team.id}`).then(parse).then(transform);
             self.videos = videos;
+            console.log(self.videos);
 
             if ( !self.videos.length ) {
 
