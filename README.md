@@ -11,3 +11,7 @@ Enter Refract.
 
 Refract collects the youtube links posted on channels and then creates a playlist that can be navigated like a normal music player.
 
+# Related Projects
+
+## API Server
+https://github.com/turtleDev/refract-api
